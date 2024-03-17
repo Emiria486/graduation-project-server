@@ -1,10 +1,10 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 14:40:55
- * @LastEditTime: 2024-03-17 16:37:22
+ * @LastEditTime: 2024-03-17 19:03:27
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\CouponDaoImpl.ts
- * @Description: 头部注释配置模板
+ * @Description: 优惠劵dao层实现类
  */
 import Coupon from '../../model/Coupon'
 import DBUtil from '../../utils/DBUtil'
@@ -57,7 +57,10 @@ export default class CouponDaoImpl implements CouponDao {
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err, result) => {
         if (err) reject(err)
-        else resolve(result as Coupon[])
+        else {
+          console.log('userCoupons', result)
+          resolve(result as Coupon[])
+        }
       })
     })
   }
@@ -68,7 +71,10 @@ export default class CouponDaoImpl implements CouponDao {
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err, result: any[]) => {
         if (err) reject(err)
-        else resolve(result[0].count)
+        else {
+          console.log('count' + result[0].count)
+          resolve(result[0].count)
+        }
       })
     })
   }
