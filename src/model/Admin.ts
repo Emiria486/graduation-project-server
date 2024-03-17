@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-16 21:44:49
- * @LastEditTime: 2024-03-16 22:18:40
+ * @LastEditTime: 2024-03-17 10:03:28
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\model\Admin.ts
  * @Description: 管理员实体类
@@ -11,8 +11,27 @@ export default class Admin {
   private _password: string
   private _username: string
   private _phone: string
-  private _avatar: string
+  private _avatar?: string
   private _address: string
+  constructor(
+    admin_id: number,
+    password: string,
+    username: string,
+    phone: string,
+    avatar: string,
+    address: string,
+    shop_name: string,
+    email: string
+  ) {
+    this._admin_id = admin_id
+    this._password = password
+    this._username = username
+    this._phone = phone
+    this._avatar = avatar
+    this._address = address
+    this._shop_name = shop_name
+    this._email = email
+  }
   private _shop_name: string
   private _email: string
 
@@ -49,11 +68,11 @@ export default class Admin {
   }
 
   public get_avatar(): string {
-    return this._avatar
+    return this._avatar!
   }
 
-  public set_avatar(_avatar: string): void {
-    this._avatar = _avatar
+  public set_avatar(avatar?: string): void {
+    this._avatar = avatar
   }
 
   public get_address(): string {
@@ -79,24 +98,7 @@ export default class Admin {
   public set_email(_email: string): void {
     this._email = _email
   }
-
-  constructor(
-    admin_id: number,
-    password: string,
-    username: string,
-    phone: string,
-    avatar: string,
-    address: string,
-    shop_name: string,
-    email: string
-  ) {
-    this._admin_id = admin_id
-    this._password = password
-    this._username = username
-    this._phone = phone
-    this._avatar = avatar
-    this._address = address
-    this._shop_name = shop_name
-    this._email = email
+  public toString(): string {
+    return `admin:${this._username}`
   }
 }
