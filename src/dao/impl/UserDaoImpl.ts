@@ -96,7 +96,7 @@ export default class UserDaoImpl implements UserDao {
     })
   }
   findWalletById(UserId: number): Promise<number> {
-    this.sql = 'select wallet from `user` where `user_id`'
+    this.sql = 'select `wallet` from `user` where `user_id`'
     this.sqlParams = [UserId]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err, result: any[]) => {

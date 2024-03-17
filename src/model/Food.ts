@@ -46,7 +46,7 @@ export default class Food {
     this._image = _image
   }
 
-  public is_status(): boolean {
+  public get_status(): boolean {
     return this._status
   }
 
