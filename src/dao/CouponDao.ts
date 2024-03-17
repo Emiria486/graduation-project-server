@@ -2,9 +2,9 @@
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 09:21:47
  * @LastEditTime: 2024-03-17 16:19:13
- * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
+//  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\CouponDao.ts
- * @Description: 优惠劵dao接口
+ * @Description: 优惠劵dao接口定义
  */
 import Coupon from '../model/Coupon'
 interface CouponDao {
