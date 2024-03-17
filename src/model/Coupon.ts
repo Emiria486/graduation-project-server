@@ -12,8 +12,22 @@ export default class Coupon {
   private _discount: number
   private _limit: number
   private _create_time: string
-  private expirein: number
-
+  private _expirein: number
+  constructor(
+    coupon_id: number,
+    title: string,
+    discount: number,
+    limit: number,
+    create_time: string,
+    expirein: number
+  ) {
+    this._coupon_id = coupon_id
+    this._title = title
+    this._discount = discount
+    this._limit = limit
+    this._create_time = create_time
+    this._expirein = expirein
+  }
   public get_coupon_id(): number {
     return this._coupon_id
   }
@@ -54,27 +68,14 @@ export default class Coupon {
     this._create_time = _create_time
   }
 
-  public getExpirein(): number {
-    return this.expirein
+  public get_expirein(): number {
+    return this._expirein
   }
 
-  public setExpirein(expirein: number): void {
-    this.expirein = expirein
+  public set_expirein(_expirein: number): void {
+    this._expirein = _expirein
   }
-
-  constructor(
-    coupon_id: number,
-    title: string,
-    discount: number,
-    limit: number,
-    create_time: string,
-    expirein: number
-  ) {
-    this._coupon_id = coupon_id
-    this._title = title
-    this._discount = discount
-    this._limit = limit
-    this._create_time = create_time
-    this.expirein = expirein
+  public toString(): string {
+    return `Coupon:${this._title}`
   }
 }

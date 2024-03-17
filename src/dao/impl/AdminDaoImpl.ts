@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 09:32:50
- * @LastEditTime: 2024-03-17 12:57:44
+ * @LastEditTime: 2024-03-17 15:45:25
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\AdminDaoImpl.ts
  * @Description: 管理员dao实现类
@@ -11,16 +11,15 @@ import DBUtil from '../../utils/DBUtil'
 import Admin from '../../model/Admin'
 
 class AdminDaoImpl implements AdminDao {
-  connection = DBUtil.createConnection()
+  pool = DBUtil.createPoolConnection()
   sql: string = ''
   sqlParams: Array<any> = []
   findByUsername(username: string): Promise<Admin> {
-    this.connection = DBUtil.createConnection()
-
-    this.sql = 'select * from admin where username = ?'
+    // 使用sql预处理防止注入攻击和提高查询性能
+    this.sql = 'select * from `admin` where `username` = ?'
     this.sqlParams = [username]
     return new Promise((resolve, reject) => {
-      this.connection.query(
+      this.pool.execute(
         this.sql,
         this.sqlParams,
         (err: any, result: Array<any>) => {
@@ -36,11 +35,11 @@ class AdminDaoImpl implements AdminDao {
               result[0].shop_name,
               result[0].email
             )
+            console.log('查到的admin', result[0])
             resolve(admin)
           } else {
             reject(null)
           }
-          this.connection.end()
         }
       )
     })
@@ -52,10 +51,8 @@ class AdminDaoImpl implements AdminDao {
    * @returns {Boolean}
    */
   updateInfoByUsername(admin: Admin): Promise<boolean> {
-    this.connection = DBUtil.createConnection()
-
     this.sql =
-      'update admin set shop_name=?,phone=?,address=?,email=? where username=?'
+      'update `admin` set `shop_name`=?,`phone`=?,`address`=?,`email`=? where `username`=?'
     this.sqlParams = [
       admin.get_shop_name(),
       admin.get_phone(),
@@ -64,49 +61,42 @@ class AdminDaoImpl implements AdminDao {
       admin.get_username(),
     ]
     return new Promise((resolve, reject) => {
-      this.connection.query(this.sql, this.sqlParams, (err: any) => {
+      this.pool.execute(this.sql, this.sqlParams, (err: any) => {
         if (err) reject(false)
         else resolve(true)
       })
-      this.connection.end()
     })
   }
   updatePassByUsername(username: string, password: string): Promise<boolean> {
-    this.connection = DBUtil.createConnection()
-
-    this.sql = 'update admin set password = ? where username = ?'
+    this.sql = 'update `admin` set `password` = ? where `username` = ?'
     this.sqlParams = [password, username]
     return new Promise((resolve, reject) => {
-      this.connection.query(this.sql, this.sqlParams, (err: any) => {
+      this.pool.execute(this.sql, this.sqlParams, (err: any) => {
         if (err) reject(false)
         else resolve(true)
       })
-      this.connection.end()
     })
   }
   updateAvatarByUsername(
     username: string,
     uploadPath: string
   ): Promise<boolean> {
-    this.connection = DBUtil.createConnection()
-
-    this.sql = 'update admin set avatar = ? where username = ?'
+    this.sql = 'update `admin` set `avatar` = ? where `username` = ?'
     this.sqlParams = [uploadPath, username]
     return new Promise((resolve, reject) => {
-      this.connection.query(this.sql, this.sqlParams, (err: any) => {
+      this.pool.execute(this.sql, this.sqlParams, (err: any) => {
         if (err) reject(false)
         else resolve(true)
       })
-      this.connection.end()
     })
   }
   findFirstOnce(): Promise<Admin> {
-    this.sql = 'select * from admin limit 1 offset 0'
-    return new Promise((resolve, rejects) => {
-      this.connection.query(this.sql, (err: any, results: Admin[]) => {
+    this.sql = 'select * from `admin` limit 1 offset 0'
+    return new Promise((resolve, reject) => {
+      this.pool.execute(this.sql, (err: any, results: Admin[]) => {
         if (err) {
           console.error('Error executing query:', err)
-          return
+          reject(err)
         } else {
           console.log('执行成功', results[0])
           resolve(results[0])
