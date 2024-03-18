@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 22:00:43
- * @LastEditTime: 2024-03-18 20:06:45
+ * @LastEditTime: 2024-03-18 21:04:53
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\OrderDaoImpl.ts
  * @Description: 订单（order）实体类的dao实现类和order_food实体类的dao实体类
@@ -164,7 +164,7 @@ export default class OrderDaoImpl implements OrderDao {
   }
   findOrderFoodByOrderId(orderId: number): Promise<any[]> {
     this.sql = this.sql =
-      'select o_f.number, o_f.order_id, f.* from order_food o_f inner join food f on o_f.food_id2 = f.food_id where order_id = ?'
+      'select o_f.`number`, o_f.`order_id`, f.* from `order_food` o_f inner join `food` f on o_f.`food_id2` = f.`food_id` where `order_id` = ?'
     this.sqlParams = [orderId]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err, result: any[]) => {
