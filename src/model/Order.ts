@@ -41,7 +41,7 @@ export default class Order {
     this._user_phone = _user_phone
   }
 
-  public is_status(): boolean {
+  public get_status(): boolean {
     return this._status
   }
 

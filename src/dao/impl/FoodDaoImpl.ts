@@ -1,3 +1,11 @@
+/*
+ * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
+ * @Date: 2024-03-17 20:43:49
+ * @LastEditTime: 2024-03-17 21:45:34
+ * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
+ * @FilePath: \server\src\dao\impl\FoodDaoImpl.ts
+ * @Description: 菜品dao实现类
+ */
 import DBUtil from '../../utils/DBUtil'
 import FoodDao from '../FoodDao'
 import Food from '../../model/Food'
