@@ -30,7 +30,7 @@ export default class FoodDaoImpl implements FoodDao {
     ]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err) => {
-        if (err) reject(err)
+        if (err) reject(false)
         else {
           console.log('addFood:成功')
           resolve(true)

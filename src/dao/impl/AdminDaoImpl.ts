@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 09:32:50
- * @LastEditTime: 2024-03-19 11:18:31
+ * @LastEditTime: 2024-03-19 18:39:26
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\AdminDaoImpl.ts
  * @Description: 管理员dao实现类
@@ -9,6 +9,7 @@
 import AdminDao from '../AdminDao'
 import DBUtil from '../../utils/DBUtil'
 import Admin from '../../model/Admin'
+import AESHelper from '../../utils/AESHelper'
 
 class AdminDaoImpl implements AdminDao {
   pool = DBUtil.createPoolConnection()
@@ -84,7 +85,8 @@ class AdminDaoImpl implements AdminDao {
    */
   updatePassByUsername(username: string, password: string): Promise<boolean> {
     this.sql = 'update `admin` set `password` = ? where `username` = ?'
-    this.sqlParams = [password, username]
+    let encryptedPassword = AESHelper.encrypt(password) //把密码加密后存储提高安全性
+    this.sqlParams = [encryptedPassword, username]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err: any) => {
         if (err) reject(false)

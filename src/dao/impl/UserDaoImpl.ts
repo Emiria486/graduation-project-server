@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 19:10:30
- * @LastEditTime: 2024-03-19 10:14:41
+ * @LastEditTime: 2024-03-19 18:43:59
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\UserDaoImpl.ts
  * @Description: 用户DAO接口实现类
@@ -9,6 +9,7 @@
 import UserDao from '../UserDao'
 import User from '../../model/User'
 import DBUtil from '../../utils/DBUtil'
+import AESHelper from '../../utils/AESHelper'
 
 export default class UserDaoImpl implements UserDao {
   pool = DBUtil.createPoolConnection()
@@ -78,7 +79,8 @@ export default class UserDaoImpl implements UserDao {
   ): Promise<boolean> {
     this.sql =
       'insert into `user`(`username`,`password`,`email`,`phone`)values(?,?,?,?)'
-    this.sqlParams = [username, password, email, phone]
+    let encryptedPassword = AESHelper.encrypt(password) //把密码加密后存储提高安全性
+    this.sqlParams = [username, encryptedPassword, email, phone]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err) => {
         if (err) reject(false)
@@ -91,9 +93,9 @@ export default class UserDaoImpl implements UserDao {
   }
 
   /**
-   * Description 通过用户id找到支付密码(已测试成功)
+   * Description 通过用户id找到未解密的支付密码(已测试成功)
    * @param {any} UserId:number 用户id
-   * @returns {any} 用户密码的字符串的promise
+   * @returns {any} 为解密的用户密码的字符串的promise
    */
   findPaymentPassByUserId(UserId: number): Promise<string> {
     this.sql = 'select `payment_password` from `user` where `user_id`=?'
@@ -120,7 +122,8 @@ export default class UserDaoImpl implements UserDao {
     payment_password: string
   ): Promise<boolean> {
     this.sql = 'update `user` set `payment_password`=? where `user_id`=?'
-    this.sqlParams = [payment_password, UserId]
+    let encryptedPassword = AESHelper.encrypt(payment_password) //把密码加密后存储提高安全性
+    this.sqlParams = [encryptedPassword, UserId]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err) => {
         if (err) reject(err)
