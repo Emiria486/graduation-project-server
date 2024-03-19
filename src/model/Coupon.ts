@@ -1,32 +1,40 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-16 22:57:42
- * @LastEditTime: 2024-03-16 23:02:32
+ * @LastEditTime: 2024-03-19 15:34:07
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\model\Coupon.ts
  * @Description: 优惠劵实体类
  */
 export default class Coupon {
-  private _coupon_id: number
+  private _coupon_id: number = 0 //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
   private _title: string
   private _discount: number
   private _limit: number
   private _create_time: string
   private _expirein: number
   constructor(
-    coupon_id: number,
     title: string,
     discount: number,
     limit: number,
     create_time: string,
-    expirein: number
+    expirein: number,
+    coupon_id?: number
   ) {
-    this._coupon_id = coupon_id
-    this._title = title
-    this._discount = discount
-    this._limit = limit
-    this._create_time = create_time
-    this._expirein = expirein
+    if (coupon_id) {
+      this._coupon_id = coupon_id
+      this._title = title
+      this._discount = discount
+      this._limit = limit
+      this._create_time = create_time
+      this._expirein = expirein
+    } else {
+      this._title = title
+      this._discount = discount
+      this._limit = limit
+      this._create_time = create_time
+      this._expirein = expirein
+    }
   }
   public get_coupon_id(): number {
     return this._coupon_id

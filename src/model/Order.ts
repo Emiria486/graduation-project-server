@@ -7,7 +7,7 @@
  * @Description: 订单实体类
  */
 export default class Order {
-  private _order_id: number
+  private _order_id: number = 0 //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
   private _user_id: number
   private _user_phone: string
   private _status: boolean
@@ -90,7 +90,7 @@ export default class Order {
   }
 
   constructor(
-    order_id: number,
+    // order_id: number,
     user_id: number,
     user_phone: string,
     status: boolean,
@@ -98,16 +98,28 @@ export default class Order {
     order_type: number,
     price: number,
     discount: number,
-    address: string
+    address: string,
+    order_id?: number
   ) {
-    this._order_id = order_id
-    this._user_id = user_id
-    this._user_phone = user_phone
-    this._status = status
-    this._create_time = create_time
-    this._order_type = order_type
-    this._price = price
-    this._discount = discount
-    this._address = address
+    if (order_id) {
+      this._order_id = order_id
+      this._user_id = user_id
+      this._user_phone = user_phone
+      this._status = status
+      this._create_time = create_time
+      this._order_type = order_type
+      this._price = price
+      this._discount = discount
+      this._address = address
+    } else {
+      this._user_id = user_id
+      this._user_phone = user_phone
+      this._status = status
+      this._create_time = create_time
+      this._order_type = order_type
+      this._price = price
+      this._discount = discount
+      this._address = address
+    }
   }
 }

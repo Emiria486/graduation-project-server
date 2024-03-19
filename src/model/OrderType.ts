@@ -1,13 +1,13 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 09:03:42
- * @LastEditTime: 2024-03-17 09:03:45
+ * @LastEditTime: 2024-03-19 11:40:08
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\model\OrderType.ts
  * @Description: 订单种类实体类
  */
 export default class OrderType {
-  private _order_type_id: number
+  private _order_type_id: number = 0 //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
   private _order_type: string
 
   public get_order_type_id(): number {
@@ -26,8 +26,12 @@ export default class OrderType {
     this._order_type = _order_type
   }
 
-  constructor(order_type_id: number, order_type: string) {
-    this._order_type_id = order_type_id
-    this._order_type = order_type
+  constructor(order_type: string, order_type_id?: number) {
+    if (order_type_id) {
+      this._order_type_id = order_type_id
+      this._order_type = order_type
+    } else {
+      this._order_type = order_type
+    }
   }
 }
