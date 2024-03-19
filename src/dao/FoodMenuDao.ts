@@ -16,7 +16,6 @@ export default interface FoodMenuDao {
   ): Promise<boolean>
   updateFoodMenuNumByFoodId(number: number, food_id: number): Promise<boolean>
   addFoodMenu(
-    food_menu_id: number,
     food_id: number,
     number: number,
     date: string
