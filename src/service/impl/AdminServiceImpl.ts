@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-19 17:30:39
- * @LastEditTime: 2024-03-20 20:32:09
+ * @LastEditTime: 2024-03-20 22:32:15
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\AdminServiceImpl.ts
  * @Description: 管理员server类的实现类
@@ -31,7 +31,7 @@ export default class AdminServiceImpl implements AdminService {
    * Description 管理员登录
    * @param {any} username:string 用户名登录
    * @param {any} password:string 客户端使用AES加密后的密码字符串
-   * @returns {any}
+   * @returns {string} 生成token字符串
    */
   async login(username: string, password: string): Promise<string> {
     try {
@@ -55,6 +55,11 @@ export default class AdminServiceImpl implements AdminService {
       return LoginEnum.serverErr
     }
   }
+  /**
+   * Description 根据指定用户名得到管理员信息
+   * @param {any} username:string 指定用户名
+   * @returns {admin} 管理员信息或错误提示字符串
+   */
   async getAdminInfo(username: string): Promise<Admin | string> {
     try {
       const admin = await this.adminDao.findByUsername(username)
@@ -63,16 +68,29 @@ export default class AdminServiceImpl implements AdminService {
         return admin
       } else {
         //如果头像为空，返回默认头像
-        admin.set_avatar(`${ConstantUtil.staticDir()}/lyj/profile/default.png`)
+        admin.set_avatar(ConstantUtil.adminDefaultAvatar)
         return admin
       }
     } catch (error) {
       return LoginEnum.serverErr
     }
   }
+  /**
+   * Description 更新管理员信息
+   * @param {any} admin:Admin 更新后的管理员对象
+   * @returns {any} Boolean的promise
+   */
   async updateAdminInfo(admin: Admin): Promise<boolean> {
     return await this.adminDao.updateInfoByUsername(admin).catch((e) => false)
   }
+  /**
+   * Description 更新管理员头像
+   * @param {any} originalname:string  文件名
+   * @param {any} destination:string 存储路径
+   * @param {any} path:string 原来的图片路径
+   * @param {any} username:string 管理员用户名
+   * @returns {any} boolean
+   */
   async updateAdminAvatar(
     originalname: string,
     destination: string,
@@ -133,10 +151,32 @@ export default class AdminServiceImpl implements AdminService {
       return false
     }
   }
+  /**
+   * Description 更新管理员登录密码
+   * @param {any} username:string 用户名
+   * @param {any} password:string 客户端加密后的密码字符串
+   * @returns {any}
+   */
   async updatePass(username: string, password: string): Promise<boolean> {
     return await this.adminDao.updatePassByUsername(username, password)
   }
+  /**
+   * Description 管理员添加新菜品（不可用，应该使用FoodService的addFood!!!）
+   * @param {any} food:Food
+   * @returns {any}
+   */
   async addNewFood(food: Food): Promise<boolean> {
     return await this.foodDao.addFood(food)
+  }
+
+  /**
+   * Description 测试AWS环境变量
+   * @returns {any}
+   */
+  envTest() {
+    console.log(process.env.AWS_ACCESS_KEY_ID)
+    console.log(process.env.AWS_SECRET_ACCESS_KEY)
+    console.log(process.env.AWS_BUCKET_NAME)
+    console.log(process.env.AWS_REGION)
   }
 }

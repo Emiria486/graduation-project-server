@@ -20,6 +20,12 @@ export default class UserServiceImpl implements UserService {
   constructor() {
     this.UserDao = new UserDaoImpl()
   }
+  /**
+   * Description 登录函数
+   * @param {any} username:string 用户名
+   * @param {any} password:string 用户密码
+   * @returns {any} LoginEnum：提示字符串 | string token
+   */
   async login(username: string, password: string): Promise<LoginEnum | string> {
     try {
       const user = await this.UserDao.findByUserName(username)
@@ -38,6 +44,14 @@ export default class UserServiceImpl implements UserService {
       return LoginEnum.serverErr
     }
   }
+  /**
+   * Description
+   * @param {any} username:string 用户名
+   * @param {any} password:string 注册密码
+   * @param {any} email:string    邮箱
+   * @param {any} phone:string  手机号
+   * @returns {any} RegisterEnum：登录提示字符串
+   */
   async register(
     username: string,
     password: string,
@@ -63,6 +77,16 @@ export default class UserServiceImpl implements UserService {
       return RegisterEnum.serverErr
     }
   }
+
+  /**
+   * Description 更新指定id的用户信息
+   * @param {any} userId:number 用户id
+   * @param {any} username:string 用户名
+   * @param {any} phone:string 手机号
+   * @param {any} address:string 地址
+   * @param {any} email:string 邮箱
+   * @returns {any} 是否更新成功
+   */
   async updateUserInfo(
     userId: number,
     username: string,
@@ -78,6 +102,11 @@ export default class UserServiceImpl implements UserService {
       email
     )
   }
+  /**
+   * Description 获取指定id的用户信息
+   * @param {any} userId:number 指定id
+   * @returns {any} User：用户信息 null：查询为空
+   */
   async getUserInfo(userId: number): Promise<User | null> {
     try {
       let user = await this.UserDao.findByUserId(userId)
@@ -93,6 +122,11 @@ export default class UserServiceImpl implements UserService {
       return null
     }
   }
+  /**
+   * Description 获得指定id的支付密码
+   * @param {any} userId:number 指定id
+   * @returns {any} 加密后的支付密码字符串
+   */
   async getPaymentPass(userId: number): Promise<string | boolean> {
     try {
       return await this.UserDao.findPaymentPassByUserId(userId)
@@ -101,6 +135,12 @@ export default class UserServiceImpl implements UserService {
       return false
     }
   }
+  /**
+   * Description 更新指定id的用户支付密码
+   * @param {any} userId:number 指定id
+   * @param {any} payment_password:string 客户端加密后的支付密码
+   * @returns {any} 是否更新成功
+   */
   async updatePaymentPass(
     userId: number,
     payment_password: string
@@ -109,6 +149,12 @@ export default class UserServiceImpl implements UserService {
       () => false
     )
   }
+  /**
+   * Description 校验支付密码是否正确
+   * @param {any} userId:number 用户id
+   * @param {any} payment_password:string 客户端加密后的支付密码
+   * @returns {any}
+   */
   async validatePaymentPass(
     userId: number,
     payment_password: string
@@ -121,9 +167,20 @@ export default class UserServiceImpl implements UserService {
       return false
     }
   }
+  /**
+   * Description 更新用户钱包余额
+   * @param {any} userId:number 指定id
+   * @param {any} price:number 扣除金额
+   * @returns {any} 是否更新成功
+   */
   async updateUserWallet(userId: number, price: number): Promise<boolean> {
     return await this.UserDao.updateWalletById(userId, price).catch(() => false)
   }
+  /**
+   * Description 找到指定id的用户钱包余额
+   * @param {any} userId:number 指定id
+   * @returns {any} 钱包余额或查询失败
+   */
   async findUserWallet(userId: number): Promise<number | boolean> {
     return await this.UserDao.findWalletById(userId).catch(() => false)
   }

@@ -22,6 +22,13 @@ export default class FoodMenuServiceImpl implements FoodMenuService {
     this.foodDao = new FoodDaoImpl()
   }
 
+  /**
+   * Description 添加菜品到菜单
+   * @param {any} foods_id:number[] 菜品id数组
+   * @param {any} number:number 菜品数量
+   * @param {any} date:string  菜单所属周几
+   * @returns {any} 是否添加成功
+   */
   async addFoodMenu(
     foods_id: number[],
     number: number,
@@ -32,11 +39,22 @@ export default class FoodMenuServiceImpl implements FoodMenuService {
     })
     return await Promise.all(ids).catch(() => false)
   }
+  /**
+   * Description 删除指定id的菜单记录
+   * @param {any} food_menu_id:number 指定菜单id
+   * @returns {any} 是否删除
+   */
   async deleteFoodMenu(food_menu_id: number): Promise<boolean> {
     return await this.foodMenuDao
       .deleteFoodMenuById(food_menu_id)
       .catch(() => false)
   }
+  /**
+   * Description 更新指定菜单中的菜品供应数量
+   * @param {any} number:number 菜品数量
+   * @param {any} food_menu_id:number 菜单id
+   * @returns {any} 是否更新成功
+   */
   async updateFoodMenuNum(
     number: number,
     food_menu_id: number
@@ -45,6 +63,11 @@ export default class FoodMenuServiceImpl implements FoodMenuService {
       .updateFoodMenuNumByFoodMenuId(number, food_menu_id)
       .catch(() => false)
   }
+  /**
+   * Description 找到指定周几的菜单所属的全部菜品数组
+   * @param {any} date:string 指定周几
+   * @returns {any} food[]：菜品数组或Boolean：查询失败
+   */
   async getFoodMenu(date: string): Promise<boolean | Food[]> {
     // 查询到的特定日期菜单数组
     let foodMenu: FoodMenu[]

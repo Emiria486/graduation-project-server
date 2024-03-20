@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-20 15:56:25
- * @LastEditTime: 2024-03-20 16:20:20
+ * @LastEditTime: 2024-03-20 23:06:38
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\FoodServiceImpl.ts
  * @Description:菜品service的实现类
@@ -18,6 +18,17 @@ export default class FoodServiceImpl implements FoodService {
   constructor() {
     this.foodDao = new FoodDaoImpl()
   }
+  /**
+   * Description 向food表添加新菜品
+   * @param {any} food_name:string 菜品名称
+   * @param {any} price:number  菜品单价
+   * @param {any} status:boolean 是否销售
+   * @param {any} description:string 菜品描述
+   * @param {any} destination:string 
+   * @param {any} path:string
+   * @param {any} filename:string 文件名
+   * @returns {any} 是否添加成功
+   */
   async addFood(
     food_name: string,
     price: number,
@@ -64,12 +75,26 @@ export default class FoodServiceImpl implements FoodService {
       return false
     }
   }
+  /**
+   * Description 更新菜品信息
+   * @param {any} food:Food 更新后的菜品信息类
+   * @returns {any} 是否修改成功
+   */
   async updateFood(food: Food): Promise<boolean> {
     return await this.foodDao.updateFood(food).catch(() => false)
   }
+  /**
+   * Description 获取所有菜品信息
+   * @returns {any}  Food[]：菜品数组或Boolean查询失败
+   */
   async getFoodData(): Promise<boolean | Food[]> {
     return this.foodDao.queryAll().catch(() => false)
   }
+  /**
+   * Description 删除指定id的菜品
+   * @param {any} food_id:number 菜品id
+   * @returns {any} 是否删除
+   */
   async deleteFood(food_id: number): Promise<boolean> {
     return await this.foodDao.deleteById(food_id).catch(() => false)
   }

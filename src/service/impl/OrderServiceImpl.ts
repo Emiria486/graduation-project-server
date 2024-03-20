@@ -78,6 +78,11 @@ export default class OrderServiceImpl implements OrderService {
   async getUserOrders(user_id: number): Promise<Order[]> {
     return await this.orderDao.queryOrderByUserId(user_id)
   }
+  /**
+   * Description 找到指定订单id对应的下单菜品数量，订单号和下单菜品的全部信息的对象数组
+   * @param {any} order_id:number
+   * @returns {any} 下单菜品数量，订单号和下单菜品的全部信息的对象数组
+   */
   async getUserOrderFoods(order_id: number): Promise<any[] | null> {
     try {
       //包含下单菜品数量，订单号和下单菜品的全部信息的对象数组
@@ -89,7 +94,7 @@ export default class OrderServiceImpl implements OrderService {
     }
   }
   /**
-   * Description 找到指定用户最近的一个订单
+   * Description 找到指定用户最新时间的一个订单
    * @param {any} user_Id:number
    * @returns {any}
    */
