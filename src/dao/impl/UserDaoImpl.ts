@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 19:10:30
- * @LastEditTime: 2024-03-19 18:43:59
+ * @LastEditTime: 2024-03-20 20:19:28
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\UserDaoImpl.ts
  * @Description: 用户DAO接口实现类
@@ -15,6 +15,24 @@ export default class UserDaoImpl implements UserDao {
   pool = DBUtil.createPoolConnection()
   sql: string = ''
   sqlParams: Array<any> = []
+  /**
+   * Description 根据指定用户名查找User
+   * @param {any} UserName:string 指定用户名
+   * @returns {any} User的promise
+   */
+  findByUserName(UserName: string): Promise<User> {
+    this.sql = 'select * from `user` where `username`=?'
+    this.sqlParams = [UserName]
+    return new Promise((resolve, reject) => {
+      this.pool.execute(this.sql, this.sqlParams, (err, result: any[]) => {
+        if (err) reject(err)
+        else {
+          console.log(' findByUserName:成功', result[0])
+          resolve(result[0] as User)
+        }
+      })
+    })
+  }
   /**
    * Description 根据用户id查找用户信息(已测试成功)
    * @param {any} UserId:number

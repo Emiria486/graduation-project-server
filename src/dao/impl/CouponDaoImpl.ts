@@ -30,7 +30,7 @@ export default class CouponDaoImpl implements CouponDao {
     ]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err) => {
-        if (err) reject(false)
+        if (err) reject(err)
         else {
           console.log('addCoupon:成功')
           resolve(true)

@@ -7,7 +7,7 @@
  * @Description: 订单中菜品数量的实体类
  */
 export default class OrderFood {
-  private _order_id: number
+  private _order_id: number = 0
   private _food_id2: number
   private _number: number
 
@@ -35,9 +35,14 @@ export default class OrderFood {
     this._number = _number
   }
 
-  constructor(order_id: number, food_id2: number, number: number) {
-    this._order_id = order_id
-    this._food_id2 = food_id2
-    this._number = number
+  constructor(food_id2: number, number: number, order_id?: number) {
+    if (order_id) {
+      this._order_id = order_id
+      this._food_id2 = food_id2
+      this._number = number
+    } else {
+      this._food_id2 = food_id2
+      this._number = number
+    }
   }
 }

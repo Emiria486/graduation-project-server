@@ -32,4 +32,6 @@ export default interface UserDao {
   updateWalletById(UserId: number, price: number): Promise<boolean>
 
   findWalletById(UserId: number): Promise<number>
+
+  findByUserName(UserName: string): Promise<User>
 }

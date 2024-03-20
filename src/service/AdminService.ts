@@ -19,8 +19,6 @@ export default interface AdminService {
     path: string,
     username: string
   ): Promise<boolean>
-  //   getAccountFlow(date: string): Promise<any>
-  //   getUserFlow(date: string): Promise<any>
   validatePass(username: string, password: string): Promise<boolean>
   updatePass(username: string, password: string): Promise<boolean>
   addNewFood(food: Food): Promise<boolean>

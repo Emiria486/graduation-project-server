@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-16 16:17:42
- * @LastEditTime: 2024-03-16 16:32:23
+ * @LastEditTime: 2024-03-20 20:55:56
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\filter\Auth.ts
  * @Description: 管理员token认证过滤器函数
@@ -17,6 +17,7 @@ const Auth = (req: any, res: any, next: any): void => {
     const token: string = req.headers.authorization.split(' ').pop()
     let result: any = JWTUtil.verify(token)
     if (result) {
+      req.currentId = result.adminId
       req.currentUsername = result.username //将信息存放到 state 中
       next()
     } else {
@@ -26,4 +27,4 @@ const Auth = (req: any, res: any, next: any): void => {
     }
   }
 }
-export default Auth;
+export default Auth

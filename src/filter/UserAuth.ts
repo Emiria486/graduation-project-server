@@ -15,7 +15,8 @@ const UserAuth = (req: any, res: any, next: any) => {
     const token: string = req.headers.authorization.split(' ').pop()
     let result: any = JWTUtil.verify(token)
     if (result) {
-      req.currentUserId = result.user_id //将信息存放到 state 中
+      req.currentId = result.userId
+      req.currentUsername = result.username //将信息存放到 state 中
       next()
     } else {
       res.status(401).send(HttpUtil.resBody(0, '登录信息已过期', null))

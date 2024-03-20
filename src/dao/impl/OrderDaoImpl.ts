@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 22:00:43
- * @LastEditTime: 2024-03-19 16:17:50
+ * @LastEditTime: 2024-03-20 17:40:43
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\OrderDaoImpl.ts
  * @Description: 订单（order）实体类的dao实现类和order_food实体类的dao实体类
@@ -15,6 +15,28 @@ export default class OrderDaoImpl implements OrderDao {
   pool = DBUtil.createPoolConnection()
   sql: string = ''
   sqlParams: Array<any> = []
+  /**
+   * Description 根据userId和订单创建时间获取订单信息(已测试成功)
+   * @param {any} user_id:number 用户id
+   * @param {any} create_time:string 订单创建时间
+   * @returns {any} order
+   */
+  queryOrderIdByUserIdAndCreate_time(
+    user_id: number,
+    create_time: string
+  ): Promise<Order> {
+    this.sql = 'select * from `order` where `user_id`=? and `create_time`=?'
+    this.sqlParams = [user_id, create_time]
+    return new Promise((resolve, reject) => {
+      this.pool.execute(this.sql, this.sqlParams, (err, result: any[]) => {
+        if (err) reject(err)
+        else {
+          console.log('queryOrderIdByUserIdAndCreate_time:成功', result[0])
+          return result[0] as Order
+        }
+      })
+    })
+  }
   /**
    * Description 插入一条新订单(已测试成功)
    * @param {any} order:Order 订单信息类
@@ -198,7 +220,7 @@ export default class OrderDaoImpl implements OrderDao {
   /**
    * Description 根据指定的订单id找到下单菜品数量，订单号和下单菜品的全部信息(已测试成功)
    * @param {any} orderId:number 订单id
-   * @returns {any} 下单菜品数量，订单号和下单菜品的全部信息的promise
+   * @returns {any} 包含下单菜品数量，订单号和下单菜品的全部信息的对象数组的promise
    */
   findOrderFoodByOrderId(orderId: number): Promise<any[]> {
     this.sql = this.sql =
