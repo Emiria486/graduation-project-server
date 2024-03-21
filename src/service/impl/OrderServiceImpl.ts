@@ -83,11 +83,19 @@ export default class OrderServiceImpl implements OrderService {
    * @param {any} order_id:number
    * @returns {any} 下单菜品数量，订单号和下单菜品的全部信息的对象数组
    */
-  async getUserOrderFoods(order_id: number): Promise<any[] | null> {
+  async getUserOrderFoods(order_ids: number[]): Promise<any[] | null> {
     try {
       //包含下单菜品数量，订单号和下单菜品的全部信息的对象数组
-      let PromiseArray = await this.orderDao.findOrderFoodByOrderId(order_id)
-      return PromiseArray
+      let PromiseArray: Promise<any>[] = order_ids.map((orderId) =>
+        this.orderDao.findOrderFoodByOrderId(orderId)
+      )
+      let foods: any[] = await Promise.all(PromiseArray)
+      // 处理格式
+      foods = foods.map((item) => ({
+        order_id: item[0].order_id,
+        food: item,
+      }))
+      return foods
     } catch (error) {
       console.log(error)
       return null

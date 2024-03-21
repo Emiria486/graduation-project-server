@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-20 11:35:01
- * @LastEditTime: 2024-03-20 12:22:12
+ * @LastEditTime: 2024-03-21 19:16:30
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\FoodMenuServiceImpl.ts
  * @Description: 菜单service的实现类
@@ -68,23 +68,26 @@ export default class FoodMenuServiceImpl implements FoodMenuService {
    * @param {any} date:string 指定周几
    * @returns {any} food[]：菜品数组或Boolean：查询失败
    */
-  async getFoodMenu(date: string): Promise<boolean | Food[]> {
-    // 查询到的特定日期菜单数组
-    let foodMenu: FoodMenu[]
-    //菜单数组中提取的全部菜品id数组
+  async getFoodMenu(date: string): Promise<any[] | boolean> {
     let ids: number[] = []
-    let foodsArr: Food[] = []
+    let foodMenu: FoodMenu[]
     try {
       foodMenu = await this.foodMenuDao.queryByDate(date)
       foodMenu.forEach((food) => {
         ids.push(food.get_food_id())
       })
-      //去重,减少查询数据库次数
+      // 去重,减少查询数据库次数
       ids = [...new Set(ids)]
       const promiseArr: any[] = ids.map((id) => this.foodDao.findById(id))
-      foodsArr = await Promise.all(promiseArr)
-      return foodsArr
-    } catch (e) {
+      const foods: Food[] = await Promise.all(promiseArr)
+      return foodMenu.map((item) => {
+        return Object.assign(
+          item,
+          foods.find((food) => food.get_food_id() === item.get_food_id())
+        )
+      })
+    } catch (error) {
+      console.log(error)
       return false
     }
   }

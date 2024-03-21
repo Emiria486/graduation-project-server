@@ -38,7 +38,7 @@ export default interface OrderService {
    * @param {any} order_id:number
    * @returns {any} 下单菜品数量，订单号和下单菜品的全部信息的对象数组
    */
-  getUserOrderFoods(order_id: number): Promise<any[] | null>
+  getUserOrderFoods(order_ids: number[]): Promise<any[] | null>
   /**
    * Description 找到指定用户最新时间的一个订单
    * @param {any} user_Id:number
