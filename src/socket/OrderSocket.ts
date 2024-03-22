@@ -1,12 +1,12 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 09:07:13
- * @LastEditTime: 2024-03-21 10:34:36
+ * @LastEditTime: 2024-03-22 17:46:46
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\socket\OrderSocket.ts
  * @Description: 实现订单状态实时更改
  */
-import * as ws from 'nodejs-websocket'
+const ws = require("nodejs-websocket")
 import OrderService from '../service/OrderService'
 import OrderServiceImpl from '../service/impl/OrderServiceImpl'
 import Order from '../model/Order'
@@ -16,7 +16,6 @@ import HttpUtil from '../utils/HttpUtil'
 import UserService from '../service/UserService'
 import UserServiceImpl from '../service/impl/UserServiceImpl'
 import ConstantUtil from '../utils/ConstantUtil'
-import OrderType from '../model/OrderType'
 import OrderTypeEnum from '../enum/OrderTypeEnum'
 
 const PORT: number = 9527
