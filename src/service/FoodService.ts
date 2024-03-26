@@ -24,6 +24,7 @@ export default interface FoodService {
     price: number,
     status: boolean,
     description: string,
+    isdelete: number,
     destination: string,
     path: string,
     filename: string
@@ -44,5 +45,5 @@ export default interface FoodService {
    * @param {any} food_id:number 菜品id
    * @returns {any} 是否删除
    */
-  deleteFood(food_id: number): Promise<boolean>
+  deleteFood(isdelete:number,food_id: number): Promise<boolean>
 }

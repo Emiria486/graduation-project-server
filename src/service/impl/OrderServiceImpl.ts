@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-20 16:37:10
- * @LastEditTime: 2024-03-20 18:39:04
+ * @LastEditTime: 2024-03-26 19:32:56
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\OrderServiceImpl.ts
  * @Description: 订单service的实现类
@@ -38,15 +38,15 @@ export default class OrderServiceImpl implements OrderService {
         let orderIDObject =
           await this.orderDao.queryOrderIdByUserIdAndCreate_time(
             user_id,
-            order.get_create_time()
+            order.create_time
           )
-        let orderID = orderIDObject.get_order_id()
+        let orderID = orderIDObject.order_id
         // 2.再向order_food表插入order_id,food_id，number
         let FullOrderFoods: OrderFood[] = []
         orderFoods.forEach((orderFood) => {
           const itemFood = new OrderFood(
-            orderFood.get_food_id2(),
-            orderFood.get_number(),
+            orderFood.food_id2,
+            orderFood.number,
             orderID
           )
           FullOrderFoods.push(itemFood)
@@ -86,15 +86,30 @@ export default class OrderServiceImpl implements OrderService {
   async getUserOrderFoods(order_ids: number[]): Promise<any[] | null> {
     try {
       //包含下单菜品数量，订单号和下单菜品的全部信息的对象数组
-      let PromiseArray: Promise<any>[] = order_ids.map((orderId) =>
+      let promiseArray: any[] = order_ids.map((orderId) =>
         this.orderDao.findOrderFoodByOrderId(orderId)
       )
-      let foods: any[] = await Promise.all(PromiseArray)
-      // 处理格式
-      foods = foods.map((item) => ({
-        order_id: item[0].order_id,
-        food: item,
+      let foods: any[] = await Promise.all(promiseArray)
+      // 过滤空数组
+      foods = foods.filter((item) =>
+        Array.isArray(item) ? item.length > 0 : true
+      )
+      foods = foods.reduce((acc, val) => acc.concat(val), [])
+      console.log('service的foods', foods)
+      //处理格式
+      foods = foods.map((item, index) => ({
+        order_id: item.order_id,
+        food: {
+          number: item.number,
+          food_id: item.food_id,
+          food_name: item.food_name,
+          price: item.price,
+          image: item.image,
+          status: item.status,
+          description: item.description,
+        },
       }))
+      console.log('service的foods finally', foods)
       return foods
     } catch (error) {
       console.log(error)
@@ -131,12 +146,8 @@ export default class OrderServiceImpl implements OrderService {
     endTime: string
   ): Promise<Order[]> {
     pageStart = (pageStart - 1) * pageSize
-    return await this.orderDao.queryByPageAndDate(
-      pageStart,
-      pageSize,
-      startTime,
-      endTime
-    )
+    return await this.orderDao
+      .queryByPageAndDate(pageStart, pageSize, startTime, endTime)
   }
   /**
    * Description 统计指定时间段的订单总数

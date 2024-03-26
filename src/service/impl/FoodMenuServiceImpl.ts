@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-20 11:35:01
- * @LastEditTime: 2024-03-21 19:16:30
+ * @LastEditTime: 2024-03-26 22:26:05
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\FoodMenuServiceImpl.ts
  * @Description: 菜单service的实现类
@@ -74,18 +74,22 @@ export default class FoodMenuServiceImpl implements FoodMenuService {
     try {
       foodMenu = await this.foodMenuDao.queryByDate(date)
       foodMenu.forEach((food) => {
-        ids.push(food.get_food_id())
+        ids.push(food.food_id)
       })
       // 去重,减少查询数据库次数
       ids = [...new Set(ids)]
       const promiseArr: any[] = ids.map((id) => this.foodDao.findById(id))
       const foods: Food[] = await Promise.all(promiseArr)
-      return foodMenu.map((item) => {
-        return Object.assign(
-          item,
-          foods.find((food) => food.get_food_id() === item.get_food_id())
+      let result =  foodMenu.map((item) => {
+        const foodFound = foods.find(
+          (food) => food.food_id === item.food_id && food.isdelete === 0
         )
+        if (foodFound) {
+          return Object.assign(item, foodFound)
+        }
       })
+      result=result.filter(item=>item!==undefined)
+      return result
     } catch (error) {
       console.log(error)
       return false

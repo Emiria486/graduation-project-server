@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-20 19:54:57
- * @LastEditTime: 2024-03-20 23:28:54
+ * @LastEditTime: 2024-03-26 20:23:14
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\UserServiceImpl.ts
  * @Description: 用户service的实现类
@@ -14,6 +14,7 @@ import User from '../../model/User'
 import JWTUtil from '../../utils/JWTUtil'
 import RegisterEnum from '../../enum/RegisterEnum'
 import ConstantUtil from '../../utils/ConstantUtil'
+import AESHelper from '../../utils/AESHelper'
 
 export default class UserServiceImpl implements UserService {
   private UserDao: UserDao
@@ -21,7 +22,7 @@ export default class UserServiceImpl implements UserService {
     this.UserDao = new UserDaoImpl()
   }
   /**
-   * Description 登录函数
+   * Description 登录函数 (已测试通过)
    * @param {any} username:string 用户名
    * @param {any} password:string 用户密码
    * @returns {any} LoginEnum：提示字符串 | string token
@@ -31,12 +32,16 @@ export default class UserServiceImpl implements UserService {
       const user = await this.UserDao.findByUserName(username)
       if (!user) {
         return LoginEnum.usernameErr
-      } else if (user.get_password() !== password) {
+      } else if (
+        AESHelper.decrypt(user.password) !== AESHelper.decrypt(password)
+      ) {
+        console.log("user.password",user.password)
+        console.log("password参数",password)
         return LoginEnum.passwordErr
       } else {
         return JWTUtil.generate({
-          username: user.get_username(),
-          userId: user.get_user_id(),
+          username: user.username,
+          userId: user.user_id,
         })
       }
     } catch (error) {
@@ -60,7 +65,7 @@ export default class UserServiceImpl implements UserService {
   ): Promise<RegisterEnum> {
     try {
       const user = await this.UserDao.findByUserName(username)
-      if (!user) {
+      if (user!==undefined) {
         return RegisterEnum.userExist
       } else {
         const addResult = await this.UserDao.insertOnce(
@@ -110,7 +115,7 @@ export default class UserServiceImpl implements UserService {
   async getUserInfo(userId: number): Promise<User | null> {
     try {
       let user = await this.UserDao.findByUserId(userId)
-      if (!user.get_avatar()) {
+      if (!user.avatar) {
         //头像为空
         user.set_avatar(ConstantUtil.userDefaultAvatar)
         return user

@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-16 10:34:04
- * @LastEditTime: 2024-03-22 17:47:00
+ * @LastEditTime: 2024-03-26 19:29:05
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\server.ts
  * @Description: 服务器入口文件
@@ -17,19 +17,7 @@ import ConstantUtil from './utils/ConstantUtil'
 import { orderSocket } from './socket/OrderSocket'
 const app = express()
 //引入cors，解决跨域问题
-const corsOptions: cors.CorsOptions = {
-  allowedHeaders: [
-    'Origin',
-    'X-Requested-With',
-    'Content-Type',
-    'Accept',
-    'X-Access-Token',
-  ],
-  credentials: true,
-  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-}
-app.use(cors(corsOptions))
+app.use(cors())
 //启动websocket服务
 orderSocket()
 //开放静态资源
@@ -39,5 +27,5 @@ app.use(bodyParser.json({ limit: '50mb' }))
 app.use('/app', userRouter).use('/lyj', adminRouter)
 
 app.listen(ConstantUtil.port, () =>
-  console.log(`http server running in http://127.0.0.1:${ConstantUtil.port}`)
+  console.log(`http server running in http://localhost:${ConstantUtil.port}`)
 )

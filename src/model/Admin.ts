@@ -1,20 +1,20 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-16 21:44:49
- * @LastEditTime: 2024-03-19 15:32:48
+ * @LastEditTime: 2024-03-25 23:55:15
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\model\Admin.ts
  * @Description: 管理员实体类
  */
 export default class Admin {
-  private _admin_id: number = 0 //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
-  private _password: string
-  private _username: string
-  private _phone: string
-  private _avatar?: string
-  private _address: string
-  private _shop_name: string
-  private _email: string
+   admin_id: number = 0 //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
+   password: string
+   username: string
+   phone: string
+   avatar?: string
+   address: string
+   shop_name: string
+   email: string
   constructor(
     password: string,
     username: string,
@@ -26,89 +26,86 @@ export default class Admin {
     admin_id?: number
   ) {
     if (admin_id) {
-      this._admin_id = admin_id
-      this._password = password
-      this._username = username
-      this._phone = phone
-      this._avatar = avatar
-      this._address = address
-      this._shop_name = shop_name
-      this._email = email
+      this.admin_id = admin_id
+      this.password = password
+      this.username = username
+      this.phone = phone
+      this.avatar = avatar
+      this.address = address
+      this.shop_name = shop_name
+      this.email = email
     } else {
-      this._password = password
-      this._username = username
-      this._phone = phone
-      this._avatar = avatar
-      this._address = address
-      this._shop_name = shop_name
-      this._email = email
+      this.password = password
+      this.username = username
+      this.phone = phone
+      this.avatar = avatar
+      this.address = address
+      this.shop_name = shop_name
+      this.email = email
     }
   }
 
   public get_admin_id(): number {
-    return this._admin_id
+    return this.admin_id
   }
 
   public set_admin_id(_admin_id: number): void {
-    this._admin_id = _admin_id
+    this.admin_id = _admin_id
   }
 
   public get_password(): string {
-    return this._password
+    return this.password
   }
 
   public set_password(_password: string): void {
-    this._password = _password
+    this.password = _password
   }
 
   public get_username(): string {
-    return this._username
+    return this.username
   }
 
   public set_username(_username: string): void {
-    this._username = _username
+    this.username = _username
   }
 
   public get_phone(): string {
-    return this._phone
+    return this.phone
   }
 
   public set_phone(_phone: string): void {
-    this._phone = _phone
+    this.phone = _phone
   }
 
   public get_avatar(): string {
-    return this._avatar!
+    return this.avatar!
   }
 
   public set_avatar(avatar?: string): void {
-    this._avatar = avatar
+    this.avatar = avatar
   }
 
   public get_address(): string {
-    return this._address
+    return this.address
   }
 
   public set_address(_address: string): void {
-    this._address = _address
+    this.address = _address
   }
 
   public get_shop_name(): string {
-    return this._shop_name
+    return this.shop_name
   }
 
   public set_shop_name(_shop_name: string): void {
-    this._shop_name = _shop_name
+    this.shop_name = _shop_name
   }
 
   public get_email(): string {
-    return this._email
+    return this.email
   }
 
   public set_email(_email: string): void {
-    this._email = _email
-  }
-  public toString(): string {
-    return `admin:${this._username}`
+    this.email = _email
   }
 }

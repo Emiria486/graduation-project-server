@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 09:07:13
- * @LastEditTime: 2024-03-22 17:46:46
+ * @LastEditTime: 2024-03-23 21:42:02
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\socket\OrderSocket.ts
  * @Description: 实现订单状态实时更改
@@ -24,7 +24,7 @@ const ADMIN: String = 'liuyongjie'
 export function orderSocket() {
   const server = ws.createServer((conn: any) => {
     // text
-    conn.on('text', async (data: string) => {
+    conn.on('message', async (data: string) => {
       const body = JSON.parse(data)
       conn.username = body.username
       if (conn.username !== ADMIN) {

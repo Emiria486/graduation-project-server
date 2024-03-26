@@ -1,48 +1,48 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 09:10:33
- * @LastEditTime: 2024-03-17 09:12:34
+ * @LastEditTime: 2024-03-26 11:58:11
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\model\OrderFood.ts
  * @Description: 订单中菜品数量的实体类
  */
 export default class OrderFood {
-  private _order_id: number = 0
-  private _food_id2: number
-  private _number: number
+   order_id: number = 0
+   food_id2: number
+   number: number
 
   public get_order_id(): number {
-    return this._order_id
+    return this.order_id
   }
 
   public set_order_id(_order_id: number): void {
-    this._order_id = _order_id
+    this.order_id = _order_id
   }
 
   public get_food_id2(): number {
-    return this._food_id2
+    return this.food_id2
   }
 
   public set_food_id2(_food_id2: number): void {
-    this._food_id2 = _food_id2
+    this.food_id2 = _food_id2
   }
 
   public get_number(): number {
-    return this._number
+    return this.number
   }
 
   public set_number(_number: number): void {
-    this._number = _number
+    this.number = _number
   }
 
   constructor(food_id2: number, number: number, order_id?: number) {
     if (order_id) {
-      this._order_id = order_id
-      this._food_id2 = food_id2
-      this._number = number
+      this.order_id = order_id
+      this.food_id2 = food_id2
+      this.number = number
     } else {
-      this._food_id2 = food_id2
-      this._number = number
+      this.food_id2 = food_id2
+      this.number = number
     }
   }
 }

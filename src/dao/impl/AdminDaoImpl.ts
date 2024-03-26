@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 09:32:50
- * @LastEditTime: 2024-03-19 18:39:26
+ * @LastEditTime: 2024-03-26 12:00:33
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\AdminDaoImpl.ts
  * @Description: 管理员dao实现类
@@ -32,14 +32,14 @@ class AdminDaoImpl implements AdminDao {
           if (err) reject(err)
           if (result.length !== 0) {
             const admin: Admin = new Admin(
-              result[0].admin_id,
               result[0].password,
               result[0].username,
               result[0].phone,
               result[0].avatar,
               result[0].address,
               result[0].shop_name,
-              result[0].email
+              result[0].email,
+              result[0].admin_id
             )
             console.log('findByUsername:成功')
             console.log('查到的admin', admin)
@@ -65,7 +65,7 @@ class AdminDaoImpl implements AdminDao {
       admin.get_phone(),
       admin.get_address(),
       admin.get_email(),
-      admin.get_username(),
+      admin.get_username()
     ]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err: any) => {

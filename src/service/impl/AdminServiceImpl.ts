@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-19 17:30:39
- * @LastEditTime: 2024-03-20 22:32:15
+ * @LastEditTime: 2024-03-26 17:28:35
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\AdminServiceImpl.ts
  * @Description: 管理员server类的实现类
@@ -18,6 +18,7 @@ import Food from '../../model/Food'
 import FoodDaoImpl from '../../dao/impl/FoodDaoImpl'
 import FoodDao from '../../dao/FoodDao'
 import AWS from 'aws-sdk'
+import AESHelper from '../../utils/AESHelper'
 require('dotenv').config() //要访问配置信息的地方加上，使其配置信息全局可访问
 
 export default class AdminServiceImpl implements AdminService {
@@ -42,13 +43,15 @@ export default class AdminServiceImpl implements AdminService {
         return LoginEnum.usernameErr
       }
       //   取出的加密后的密码与在客户端加密后的密码不对，密码登录失败
-      else if (admin.get_password() !== password) {
+      else if (
+        AESHelper.decrypt(admin.password) !== AESHelper.decrypt(password)
+      ) {
         return LoginEnum.passwordErr
       } else {
         // 登录成功，生成token
         return JWTUtil.generate({
-          username: admin.get_username(),
-          adminId: admin.get_admin_id(),
+          username: admin.username,
+          adminId: admin.admin_id,
         })
       }
     } catch (e) {
@@ -64,7 +67,7 @@ export default class AdminServiceImpl implements AdminService {
     try {
       const admin = await this.adminDao.findByUsername(username)
       //   检查头像字符串是否为空
-      if (admin.get_avatar().length === 0) {
+      if (admin.avatar?.length !== 0) {
         return admin
       } else {
         //如果头像为空，返回默认头像
@@ -146,7 +149,10 @@ export default class AdminServiceImpl implements AdminService {
       // 在数据库中取出对象
       const admin: Admin = await this.adminDao.findByUsername(username)
       //   比较数据库中的加密密码与加密后的输入的用户密码是否相同
-      return admin.get_password() === password
+      const result =
+        AESHelper.decrypt(admin.password) === AESHelper.decrypt(password)
+      console.log('service', result)
+      return result
     } catch (error) {
       return false
     }

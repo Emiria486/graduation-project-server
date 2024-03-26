@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-22 10:42:57
- * @LastEditTime: 2024-03-22 16:20:42
+ * @LastEditTime: 2024-03-26 19:34:32
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\router\adminRouter.ts
  * @Description: 管理员api路径
@@ -15,7 +15,6 @@ const avatarUpload = multer({ dest: ConstantUtil.uploadAdminProfilePath })
 const foodImageUpload = multer({ dest: ConstantUtil.uploadFoodImagePath })
 
 const adminRouter = express.Router()
-
 adminRouter.post('/login', AdminController.adminLogin)
 adminRouter.get('/admin_info', Auth, AdminController.getAdminInfo)
 
@@ -51,6 +50,6 @@ adminRouter.put('/food_menu', Auth, AdminController.updateFoodMenuNum)
 adminRouter.delete('/food_menu', Auth, AdminController.deleteFoodMenu)
 adminRouter.get('/outstanding-order', Auth, AdminController.getOutstandingOrder)
 
-adminRouter.get('/order_search', AdminController.getOrders)
+adminRouter.get('/order_search', Auth,AdminController.getOrders)
 
 export default adminRouter

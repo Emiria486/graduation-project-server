@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 20:43:49
- * @LastEditTime: 2024-03-19 15:47:51
+ * @LastEditTime: 2024-03-26 18:51:45
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\FoodDaoImpl.ts
  * @Description: 菜品dao实现类
@@ -20,13 +20,14 @@ export default class FoodDaoImpl implements FoodDao {
    */
   addFood(food: Food): Promise<boolean> {
     this.sql =
-      'insert into `food`(`food_name`,`price`,`image`,`status`,`description`)values(?,?,?,?,?)'
+      'insert into `food`(`food_name`,`price`,`image`,`status`,`description`,`isdelete`)values(?,?,?,?,?,?)'
     this.sqlParams = [
       food.get_food_name(),
       food.get_price(),
       food.get_image(),
       food.get_status(),
       food.get_description(),
+      food.get_isdelete(),
     ]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err) => {
@@ -45,13 +46,13 @@ export default class FoodDaoImpl implements FoodDao {
    */
   updateFood(food: Food): Promise<boolean> {
     this.sql =
-      'update `food` set `food_name`=?,`price`=?,`image`=?,`status`=?,`description`=? where `food_id`=?'
+      'update `food` set `food_name`=?,`price`=?,`status`=?,`description`=?,`isdelete`=? where `food_id`=?'
     this.sqlParams = [
       food.get_food_name(),
       food.get_price(),
-      food.get_image(),
       food.get_status(),
       food.get_description(),
+      food.get_isdelete(),
       food.get_food_id(),
     ]
     return new Promise((resolve, reject) => {
@@ -85,9 +86,9 @@ export default class FoodDaoImpl implements FoodDao {
    * @param {any} food_id:number 菜品id
    * @returns {any} Boolean的promise
    */
-  deleteById(food_id: number): Promise<boolean> {
-    this.sql = 'delete from `food` where `food_id`=?'
-    this.sqlParams = [food_id]
+  deleteById(isdelete:number,food_id: number): Promise<boolean> {
+    this.sql = 'update `food` set `isdelete`=? where `food_id`=?'
+    this.sqlParams = [isdelete,food_id]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err) => {
         if (err) reject(err)

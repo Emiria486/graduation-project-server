@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-22 16:21:19
- * @LastEditTime: 2024-03-22 16:26:13
+ * @LastEditTime: 2024-03-26 22:48:47
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\router\userRouter.ts
  * @Description: 管理员api路径
@@ -26,7 +26,7 @@ userRouter.get("/issue-coupons", UserController.getIssueCoupon)
 
 userRouter.get('/user-coupons', UserAuth, UserController.getUserCoupon)
 
-userRouter.post('/user_coupons', UserAuth, UserController.addCoupon)
+userRouter.post('/user-coupons', UserAuth, UserController.addCoupon)
 
 userRouter.get('/user-payment-pass/exist', UserAuth, UserController.isUserPaymentExist)
 

@@ -7,31 +7,31 @@
  * @Description: 订单种类实体类
  */
 export default class OrderType {
-  private _order_type_id: number = 0 //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
-  private _order_type: string
+  order_type_id: number = 0 //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
+  order_type: string
 
   public get_order_type_id(): number {
-    return this._order_type_id
+    return this.order_type_id
   }
 
   public set_order_type_id(_order_type_id: number): void {
-    this._order_type_id = _order_type_id
+    this.order_type_id = _order_type_id
   }
 
   public get_order_type(): string {
-    return this._order_type
+    return this.order_type
   }
 
   public set_order_type(_order_type: string): void {
-    this._order_type = _order_type
+    this.order_type = _order_type
   }
 
   constructor(order_type: string, order_type_id?: number) {
     if (order_type_id) {
-      this._order_type_id = order_type_id
-      this._order_type = order_type
+      this.order_type_id = order_type_id
+      this.order_type = order_type
     } else {
-      this._order_type = order_type
+      this.order_type = order_type
     }
   }
 }

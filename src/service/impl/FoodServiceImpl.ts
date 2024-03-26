@@ -24,7 +24,7 @@ export default class FoodServiceImpl implements FoodService {
    * @param {any} price:number  菜品单价
    * @param {any} status:boolean 是否销售
    * @param {any} description:string 菜品描述
-   * @param {any} destination:string 
+   * @param {any} destination:string
    * @param {any} path:string
    * @param {any} filename:string 文件名
    * @returns {any} 是否添加成功
@@ -34,6 +34,7 @@ export default class FoodServiceImpl implements FoodService {
     price: number,
     status: boolean,
     description: string,
+    isdelete: number,
     destination: string,
     path: string,
     filename: string
@@ -69,7 +70,14 @@ export default class FoodServiceImpl implements FoodService {
           console.log('Image uploaded successfully. URL:', data.Location)
         }
       })
-      const food = new Food(food_name, price, awsImage, status, description)
+      const food = new Food(
+        food_name,
+        price,
+        awsImage,
+        status,
+        description,
+        isdelete
+      )
       return await this.foodDao.addFood(food).catch(() => false)
     } else {
       return false
@@ -95,7 +103,7 @@ export default class FoodServiceImpl implements FoodService {
    * @param {any} food_id:number 菜品id
    * @returns {any} 是否删除
    */
-  async deleteFood(food_id: number): Promise<boolean> {
-    return await this.foodDao.deleteById(food_id).catch(() => false)
+  async deleteFood(isdelete:number,food_id: number): Promise<boolean> {
+    return await this.foodDao.deleteById(isdelete,food_id).catch(() => false)
   }
 }
