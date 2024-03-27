@@ -1,5 +1,7 @@
 enum UserMessageEnum {
   UserPaymentExist = '用户支付密码存在',
+  UserPaymentNotExist="用户支付密码不存在",
+  UserPaymentNot6="输入的支付密码不是6位数字",
   wrongPayPassword = '请重新确认输入，您输入了错误的支付密码',
   successPayPassword = '支付密码验证成功',
   successUpdateUserinfo = '更新用户信息成功',

@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 11:04:26
- * @LastEditTime: 2024-03-26 22:53:03
+ * @LastEditTime: 2024-03-27 10:37:55
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\controller\UserController.ts
  * @Description: 用户controller实现类
@@ -228,7 +228,7 @@ export default class UserController {
   }
 
   /**
-   * Description 确定用户支付密码是否存在
+   * Description 确定用户支付密码是否存在(已测试通过)
    * @param {any} req:any
    * @param {any} res:any
    * @returns {any}
@@ -244,21 +244,29 @@ export default class UserController {
         })
       )
     } else {
-      res.status(500).send(HttpUtil.resBody(0, ConstantUtil.serverErrMsg, ''))
+      res.send(HttpUtil.resBody(0, UserMessageEnum.UserPaymentNotExist, ''))
     }
   }
+  /**
+   * Description 检验用户的支付密码是否正确（已测试通过）
+   * @param {any} req:any
+   * @param {any} res:any
+   * @returns {any}
+   */
   public static async validatePaymentPass(req: any, res: any): Promise<void> {
     const user_id: number = req.currentId
     // 客户端加密后的支付密码字符串
     const payment_password: string = req.body.payment_password
     // 解密后的支付密码字符串
-    const encryptedPassword = AESHelper.encrypt(payment_password)
+    const encryptedPassword =  AESHelper.decrypt(payment_password)
+    console.log("解密后的支付密码",encryptedPassword)
     // 支付密码正则：只能匹配6位数字
-    const regExp: RegExp = new RegExp('/^d{6}$/')
-    if (!regExp.test(payment_password)) {
-      res
+    const regExp: RegExp = new RegExp(/^\d{6}$/)
+    console.log("判断结果未取反",regExp.test(encryptedPassword))
+    if (!regExp.test(encryptedPassword)) {
+      return res
         .status(400)
-        .send(HttpUtil.resBody(0, UserMessageEnum.wrongPayPassword, ''))
+        .send(HttpUtil.resBody(0, UserMessageEnum.UserPaymentNot6, ''))
     }
     const result =
       await UserController.getInstance().userService.validatePaymentPass(
@@ -271,13 +279,19 @@ export default class UserController {
       res.send(HttpUtil.resBody(0, UserMessageEnum.wrongPayPassword, ''))
     }
   }
+  /**
+   * Description 更新支付密码（已通过测试）
+   * @param {any} req:any
+   * @param {any} res:any
+   * @returns {any}
+   */
   public static async updatePaymentPass(req: any, res: any): Promise<void> {
     const user_id: number = req.currentId
-    const payment_password: string = req.body.payment_password
+    const payment_password: string = req.body.payment_password  //加密后的支付密码
     const result =
       await UserController.getInstance().userService.updatePaymentPass(
         user_id,
-        payment_password
+        payment_password  
       )
     if (result) {
       res.send(
@@ -287,6 +301,12 @@ export default class UserController {
       res.status(500).send(HttpUtil.resBody(0, ConstantUtil.serverErrMsg, ''))
     }
   }
+  /**
+   * Description 获取所有的就餐方式选项（已通过测试）
+   * @param {any} req:any
+   * @param {any} res:any
+   * @returns {any}
+   */
   public static async getOrderType(req: any, res: any): Promise<void> {
     const orderTypes: OrderType[] =
       await UserController.getInstance().orderService.getOrderType()
@@ -296,6 +316,12 @@ export default class UserController {
       res.status(500).send(HttpUtil.resBody(0, ConstantUtil.serverErrMsg, ''))
     }
   }
+  /**
+   * Description 获取指定用户的全部订单（已测试通过）
+   * @param {any} req:any
+   * @param {any} res:any
+   * @returns {any}
+   */
   public static async getOrder(req: any, res: any): Promise<void> {
     const user_id: number = req.currentId
     //记录服务器状态
@@ -304,7 +330,7 @@ export default class UserController {
       await UserController.getInstance().orderService.getUserOrders(user_id)
     let orderFoods: any[] | null = []
     if (orders) {
-      const orderIds: number[] = orders.map((order) => order.get_order_id())
+      const orderIds: number[] = orders.map((order) => order.order_id)
       orderFoods =
         await UserController.getInstance().orderService.getUserOrderFoods(
           orderIds
@@ -324,6 +350,12 @@ export default class UserController {
       res.status(500).send(HttpUtil.resBody(0, ConstantUtil.serverErrMsg, ''))
     }
   }
+  /**
+   * Description 更新用户的钱包余额(已测试通过)
+   * @param {any} req:any
+   * @param {any} res:any
+   * @returns {any}
+   */
   public static async updateUserWallet(req: any, res: any): Promise<void> {
     // 将总金额转换为负数形式满足mysql的更新
     const price: number = -req.body.price
@@ -331,7 +363,7 @@ export default class UserController {
     const wallet =
       await UserController.getInstance().userService.findUserWallet(user_id)
     // 如果查询到钱包余额
-    if (!wallet) {
+    if (wallet) {
       if ((wallet as number) < Math.abs(price)) {
         res.send(HttpUtil.resBody(0, UserMessageEnum.walletNotEnough, ''))
       } else {

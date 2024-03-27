@@ -35,8 +35,8 @@ export default class UserServiceImpl implements UserService {
       } else if (
         AESHelper.decrypt(user.password) !== AESHelper.decrypt(password)
       ) {
-        console.log("user.password",user.password)
-        console.log("password参数",password)
+        console.log('user.password', user.password)
+        console.log('password参数', password)
         return LoginEnum.passwordErr
       } else {
         return JWTUtil.generate({
@@ -65,7 +65,7 @@ export default class UserServiceImpl implements UserService {
   ): Promise<RegisterEnum> {
     try {
       const user = await this.UserDao.findByUserName(username)
-      if (user!==undefined) {
+      if (user !== undefined) {
         return RegisterEnum.userExist
       } else {
         const addResult = await this.UserDao.insertOnce(
@@ -134,7 +134,12 @@ export default class UserServiceImpl implements UserService {
    */
   async getPaymentPass(userId: number): Promise<string | boolean> {
     try {
-      return await this.UserDao.findPaymentPassByUserId(userId)
+      let result = await this.UserDao.findPaymentPassByUserId(userId)
+      if (result.length === 0) {
+        return false
+      } else {
+        return result
+      }
     } catch (error) {
       console.log(error)
       return false
@@ -150,9 +155,10 @@ export default class UserServiceImpl implements UserService {
     userId: number,
     payment_password: string
   ): Promise<boolean> {
-    return await this.UserDao.updatePaymentPass(userId, payment_password).catch(
-      () => false
-    )
+    return await this.UserDao.updatePaymentPass(
+      userId,
+      AESHelper.decrypt(payment_password)
+    ).catch(() => false)
   }
   /**
    * Description 校验支付密码是否正确
@@ -166,7 +172,9 @@ export default class UserServiceImpl implements UserService {
   ): Promise<boolean> {
     try {
       let DBPassword = await this.UserDao.findPaymentPassByUserId(userId)
-      return DBPassword === payment_password
+      return (
+        AESHelper.decrypt(DBPassword) === AESHelper.decrypt(payment_password)
+      )
     } catch (error) {
       console.log(error)
       return false
