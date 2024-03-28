@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 11:04:26
- * @LastEditTime: 2024-03-27 10:37:55
+ * @LastEditTime: 2024-03-28 19:34:28
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\controller\UserController.ts
  * @Description: 用户controller实现类
@@ -258,11 +258,11 @@ export default class UserController {
     // 客户端加密后的支付密码字符串
     const payment_password: string = req.body.payment_password
     // 解密后的支付密码字符串
-    const encryptedPassword =  AESHelper.decrypt(payment_password)
-    console.log("解密后的支付密码",encryptedPassword)
+    const encryptedPassword = AESHelper.decrypt(payment_password)
+    console.log('解密后的支付密码', encryptedPassword)
     // 支付密码正则：只能匹配6位数字
     const regExp: RegExp = new RegExp(/^\d{6}$/)
-    console.log("判断结果未取反",regExp.test(encryptedPassword))
+    console.log('判断结果未取反', regExp.test(encryptedPassword))
     if (!regExp.test(encryptedPassword)) {
       return res
         .status(400)
@@ -287,11 +287,11 @@ export default class UserController {
    */
   public static async updatePaymentPass(req: any, res: any): Promise<void> {
     const user_id: number = req.currentId
-    const payment_password: string = req.body.payment_password  //加密后的支付密码
+    const payment_password: string = req.body.payment_password //加密后的支付密码
     const result =
       await UserController.getInstance().userService.updatePaymentPass(
         user_id,
-        payment_password  
+        payment_password
       )
     if (result) {
       res.send(
@@ -330,7 +330,9 @@ export default class UserController {
       await UserController.getInstance().orderService.getUserOrders(user_id)
     let orderFoods: any[] | null = []
     if (orders) {
-      const orderIds: number[] = orders.map((order) => order.order_id)
+      const orderIds: number[] = orders.map(
+        (order) => order.order_id
+      ) as number[]
       orderFoods =
         await UserController.getInstance().orderService.getUserOrderFoods(
           orderIds

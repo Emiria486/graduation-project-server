@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-16 22:31:33
- * @LastEditTime: 2024-03-26 11:50:51
+ * @LastEditTime: 2024-03-28 19:24:05
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\model\Order.ts
  * @Description: 头部注释配置模板
@@ -15,17 +15,17 @@
  * @Description: 订单实体类
  */
 export default class Order {
-   order_id: number = 0 //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
-   user_id: number
-   user_phone: string
-   status: boolean
-   create_time: string
-   order_type: number
-   price: number
-   discount: number
-   address: string
+  order_id?: number //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
+  user_id: number
+  user_phone: string
+  status: boolean
+  create_time: string
+  order_type: number
+  price: number
+  discount: number
+  address: string
 
-  public get_order_id(): number {
+  public get_order_id(): number | undefined {
     return this.order_id
   }
 

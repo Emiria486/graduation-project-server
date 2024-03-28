@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 11:04:15
- * @LastEditTime: 2024-03-26 19:49:56
+ * @LastEditTime: 2024-03-28 19:30:59
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\controller\AdminController.ts
  * @Description: 管理员controller层
@@ -131,14 +131,21 @@ export default class AdminController {
       res.send(HttpUtil.resBody(0, '密码错误！', ''))
     }
   }
+  /**
+   * Description 更新管理员头像（已测试通过）
+   * @param {any} req:any
+   * @param {any} res:any
+   * @returns {any}
+   */
   public static async updateAvatar(req: any, res: any) {
-    const username: string = req.currentUsername
+    const username = req.currentUsername
+    // body类型选择form-data, 然后键名称选择files,对就是上传的图片
     const { originalname, destination, path } = req.files[0]
     const result: boolean =
       await AdminController.getInstance().adminService!.updateAdminAvatar(
-        originalname,
-        destination,
-        path,
+        originalname, //用户计算机上的文件的名称
+        destination, //保存路径
+        path, //已上传文件的完整路径
         username
       )
     if (result) {
@@ -228,11 +235,20 @@ export default class AdminController {
       res.send(HttpUtil.resBody(0, ConstantUtil.serverErrMsg, ''))
     }
   }
+  /**
+   * Description 上传菜品的全部信息，包括图片(已测试通过)
+   * @param {any} req:any
+   * @param {any} res:any
+   * @returns {any}
+   */
   public static async addFood(req: any, res: any): Promise<void> {
-    const { food_name, price, status, description, isdelete } = req.body
-    const { destination, path, filename } = req.files[0]
+    // 菜品信息在form-data中已json字符串的形式传输
+    const { food_name, price, status, description, isdelete } = JSON.parse(
+      req.body.food
+    )
+    const { destination, path, originalname } = req.files[0]
     const result: boolean =
-      await AdminController.getInstance().foodService!.addFood(
+      await AdminController.getInstance().foodService.addFood(
         food_name,
         price,
         status,
@@ -240,7 +256,7 @@ export default class AdminController {
         isdelete,
         destination,
         path,
-        filename
+        originalname
       )
     if (result) {
       res.send(HttpUtil.resBody(1, '菜品添加成功', ''))
@@ -389,7 +405,7 @@ export default class AdminController {
         AdminController.getInstance().userService.getUserInfo(item)
       )
       const users = await Promise.all(userPromiseArr)
-      let orderIds: number[] = orders.map((order) => order.order_id)
+      let orderIds: number[] = orders.map((order) => order.order_id) as number[]
       console.log('orderIds', orderIds)
       const foods =
         await AdminController.getInstance().orderService.getUserOrderFoods(
@@ -437,17 +453,21 @@ export default class AdminController {
         startTime,
         endTime
       )
-    const userIds: number[] = [
-      ...new Set(orders.map((order) => order.user_id)),
-    ]
+    const userIds: number[] = [...new Set(orders.map((order) => order.user_id))]
     const users = await Promise.all(
       userIds.map((id) =>
         AdminController.getInstance().userService!.getUserInfo(id)
       )
     )
+    const filteredOrders = orders.filter(
+      (order) => order !== undefined && order.order_id !== undefined
+    )
+    const orderIds: number[] = filteredOrders.map(
+      (order) => order!.order_id
+    ) as number[]
     const orderFoods =
       await AdminController.getInstance().orderService!.getUserOrderFoods(
-        orders.map((order) => order.order_id)
+        orderIds
       )
     const count: number | boolean =
       await AdminController.getInstance().orderService!.getOrdersCount(
@@ -455,7 +475,14 @@ export default class AdminController {
         endTime
       )
     if (orders) {
-      res.send(HttpUtil.resBody(1, '已获得分页订单数据', { orders, users, orderFoods, count }))
+      res.send(
+        HttpUtil.resBody(1, '已获得分页订单数据', {
+          orders,
+          users,
+          orderFoods,
+          count,
+        })
+      )
     } else {
       res.send(HttpUtil.resBody(0, ConstantUtil.serverErrMsg, ''))
     }

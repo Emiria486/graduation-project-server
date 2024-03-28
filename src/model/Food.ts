@@ -7,7 +7,7 @@
  * @Description: 菜品实体类
  */
 export default class Food {
-  food_id: number = 0 //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
+  food_id?: number //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
   food_name: string
   price: number
   image: string
@@ -23,7 +23,7 @@ export default class Food {
     this.isdelete = isdelete
   }
 
-  public get_food_id(): number {
+  public get_food_id(): number | undefined {
     return this.food_id
   }
 

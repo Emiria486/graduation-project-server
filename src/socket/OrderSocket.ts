@@ -1,12 +1,12 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 09:07:13
- * @LastEditTime: 2024-03-23 21:42:02
+ * @LastEditTime: 2024-03-28 19:35:52
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\socket\OrderSocket.ts
  * @Description: 实现订单状态实时更改
  */
-const ws = require("nodejs-websocket")
+const ws = require('nodejs-websocket')
 import OrderService from '../service/OrderService'
 import OrderServiceImpl from '../service/impl/OrderServiceImpl'
 import Order from '../model/Order'
@@ -68,13 +68,13 @@ export function orderSocket() {
               const orderService: OrderService = new OrderServiceImpl()
               let flag: boolean //记录服务器状态
               const [userInfo, userOrder] = await Promise.all([
-                UserService.getUserInfo(order.get_user_id()),
-                orderService.getUserNewOrder(order.get_user_id()),
+                UserService.getUserInfo(order.user_id),
+                orderService.getUserNewOrder(order.user_id),
               ])
-              let foods: any[]=[]
+              let foods: any[] = []
               if (userInfo && userOrder) {
                 foods = await orderService.getUserNewOrderFoods(
-                  userOrder.get_order_id()
+                  userOrder.order_id as number
                 )
                 flag = !!foods
               } else {

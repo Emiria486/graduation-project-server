@@ -7,14 +7,14 @@
  * @Description: 管理员实体类
  */
 export default class Admin {
-   admin_id: number = 0 //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
-   password: string
-   username: string
-   phone: string
-   avatar?: string
-   address: string
-   shop_name: string
-   email: string
+  admin_id?: number //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
+  password: string
+  username: string
+  phone: string
+  avatar?: string
+  address: string
+  shop_name: string
+  email: string
   constructor(
     password: string,
     username: string,
@@ -45,7 +45,7 @@ export default class Admin {
     }
   }
 
-  public get_admin_id(): number {
+  public get_admin_id(): number | undefined {
     return this.admin_id
   }
 

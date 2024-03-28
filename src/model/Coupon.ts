@@ -7,12 +7,12 @@
  * @Description: 优惠劵实体类
  */
 export default class Coupon {
-   coupon_id: number = 0 //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
-   title: string
-   discount: number
-   limit: number
-   create_time: string
-   expirein: number
+  coupon_id?: number //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
+  title: string
+  discount: number
+  limit: number
+  create_time: string
+  expirein: number
   constructor(
     title: string,
     discount: number,
@@ -36,7 +36,7 @@ export default class Coupon {
       this.expirein = expirein
     }
   }
-  public get_coupon_id(): number {
+  public get_coupon_id(): number | undefined {
     return this.coupon_id
   }
 

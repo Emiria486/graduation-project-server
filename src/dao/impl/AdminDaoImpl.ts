@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 09:32:50
- * @LastEditTime: 2024-03-26 12:00:33
+ * @LastEditTime: 2024-03-27 18:09:49
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\AdminDaoImpl.ts
  * @Description: 管理员dao实现类
@@ -111,7 +111,7 @@ class AdminDaoImpl implements AdminDao {
     this.sqlParams = [uploadPath, username]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err: any) => {
-        if (err) reject(false)
+        if (err) reject(err)
         else {
           console.log('updateAvatarByUsername:成功')
           resolve(true)

@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-20 15:56:25
- * @LastEditTime: 2024-03-20 23:06:38
+ * @LastEditTime: 2024-03-28 19:22:11
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\FoodServiceImpl.ts
  * @Description:菜品service的实现类
@@ -41,7 +41,7 @@ export default class FoodServiceImpl implements FoodService {
   ): Promise<boolean> {
     // 图片处理
     const oldPath: string = path
-    const newPath: string = `${destination}/${filename}.jpg`
+    const newPath: string = `${destination}/${filename}`
     let awsImage = ''
     if (fs.existsSync(oldPath)) {
       fs.renameSync(oldPath, newPath)
@@ -54,31 +54,47 @@ export default class FoodServiceImpl implements FoodService {
       AWS.config.update(awsConfig)
       // 创建S3服务对象
       const s3 = new AWS.S3()
-      // 上传图片到S3存储桶
-      const uploadParams = {
-        Bucket: process.env.AWS_BUCKET_NAME as string,
-        Key: filename, // 上传后的文件名
-        Body: fs.readFileSync(newPath),
-        ACL: 'public-read', // 设置上传后的文件为公共读取权限
+      // 上传图片到S3存储桶的函数，保证在上传完成后再执行数据库更新
+      const uploadToS3 = () => {
+        return new Promise((resolve, reject) => {
+          const uploadParams = {
+            Bucket: process.env.AWS_BUCKET_NAME as string,
+            Key: filename, // 上传后的文件名
+            Body: fs.readFileSync(newPath),
+            ACL: 'public-read', // 设置上传后的文件为公共读取权限
+          }
+          s3.upload(uploadParams, (err: any, data: any) => {
+            if (err) {
+              console.log('Error:', err)
+              reject(err)
+            } else {
+              awsImage = data.Location //获得图片链接对象
+              console.log('Image uploaded successfully. URL:', data.Location)
+              resolve(awsImage)
+            }
+          })
+        })
       }
-      s3.upload(uploadParams, (err: any, data: any) => {
-        if (err) {
-          console.log('Error:', err)
-          return false
-        } else {
-          awsImage = data.Location //获得图片链接对象
-          console.log('Image uploaded successfully. URL:', data.Location)
-        }
-      })
-      const food = new Food(
-        food_name,
-        price,
-        awsImage,
-        status,
-        description,
-        isdelete
-      )
-      return await this.foodDao.addFood(food).catch(() => false)
+      try {
+        const uploadUrl = await uploadToS3()
+        const food = new Food(
+          food_name,
+          price,
+          uploadUrl as string,
+          status,
+          description,
+          isdelete
+        )
+        // 上传完以后删除本地文件
+        fs.unlinkSync(newPath)
+        console.log('成功删除本地文件')
+        const updated = await this.foodDao.addFood(food)
+        
+        return updated
+      } catch (error) {
+        console.error('上传S3失败或上传数据库失败', error)
+        return false
+      }
     } else {
       return false
     }
@@ -103,7 +119,7 @@ export default class FoodServiceImpl implements FoodService {
    * @param {any} food_id:number 菜品id
    * @returns {any} 是否删除
    */
-  async deleteFood(isdelete:number,food_id: number): Promise<boolean> {
-    return await this.foodDao.deleteById(isdelete,food_id).catch(() => false)
+  async deleteFood(isdelete: number, food_id: number): Promise<boolean> {
+    return await this.foodDao.deleteById(isdelete, food_id).catch(() => false)
   }
 }

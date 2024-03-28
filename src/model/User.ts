@@ -39,7 +39,7 @@ export default class User {
       this.phone = phone
     }
   }
-  user_id: number = 0 //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
+  user_id?: number //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
   username: string
   password: string
   address: string
@@ -49,7 +49,7 @@ export default class User {
   email: string
   phone: string
 
-  public get_user_id(): number {
+  public get_user_id(): number|undefined {
     return this.user_id
   }
 
