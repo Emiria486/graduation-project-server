@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 11:04:15
- * @LastEditTime: 2024-03-28 19:30:59
+ * @LastEditTime: 2024-03-28 19:44:16
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\controller\AdminController.ts
  * @Description: 管理员controller层
@@ -327,6 +327,12 @@ export default class AdminController {
       res.send(HttpUtil.resBody(0, ConstantUtil.serverErrMsg, ''))
     }
   }
+  /**
+   * Description 将菜品数组添加到指定日期的菜单中（已测试通过）
+   * @param {any} req:any
+   * @param {any} res:any
+   * @returns {any}
+   */
   public static async addFoodMenu(req: any, res: any): Promise<void> {
     const number: number = req.body.number * 1
     const date: string = req.body.date
