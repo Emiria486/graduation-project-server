@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 11:04:15
- * @LastEditTime: 2024-03-28 19:44:16
+ * @LastEditTime: 2024-03-29 09:47:25
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\controller\AdminController.ts
  * @Description: 管理员controller层
@@ -411,6 +411,7 @@ export default class AdminController {
         AdminController.getInstance().userService.getUserInfo(item)
       )
       const users = await Promise.all(userPromiseArr)
+      console.log('controller的users', users)
       let orderIds: number[] = orders.map((order) => order.order_id) as number[]
       console.log('orderIds', orderIds)
       const foods =

@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-20 19:54:57
- * @LastEditTime: 2024-03-26 20:23:14
+ * @LastEditTime: 2024-03-29 09:54:45
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\UserServiceImpl.ts
  * @Description: 用户service的实现类
@@ -114,14 +114,8 @@ export default class UserServiceImpl implements UserService {
    */
   async getUserInfo(userId: number): Promise<User | null> {
     try {
-      let user = await this.UserDao.findByUserId(userId)
-      if (!user.avatar) {
-        //头像为空
-        user.set_avatar(ConstantUtil.userDefaultAvatar)
-        return user
-      } else {
-        return user
-      }
+      let user: User = await this.UserDao.findByUserId(userId)
+      return user
     } catch (error) {
       console.log(error)
       return null

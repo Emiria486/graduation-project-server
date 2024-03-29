@@ -1,21 +1,30 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-16 22:14:39
- * @LastEditTime: 2024-03-26 11:59:09
+ * @LastEditTime: 2024-03-29 09:24:56
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\model\User.ts
  * @Description: 用户实体类
  */
 export default class User {
+  user_id?: number //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
+  username: string=''
+  password: string=''
+  address: string=''
+  avatar: string=''
+  wallet: number=0
+  payment_password: string=''
+  email: string=''
+  phone: string=''
   constructor(
-    username: string,
-    password: string,
-    address: string,
-    avatar: string,
+    username: string ,
+    password: string ,
+    address: string ,
+    avatar: string ,
     wallet: number,
-    payment_password: string,
-    email: string,
-    phone: string,
+    payment_password: string ,
+    email: string ,
+    phone: string ,
     user_id?: number
   ) {
     if (user_id) {
@@ -39,17 +48,8 @@ export default class User {
       this.phone = phone
     }
   }
-  user_id?: number //mysql 数据库里面设置了id自增，所以为了避免在构造函数里面手动添加id值，直接使用默认赋值
-  username: string
-  password: string
-  address: string
-  avatar: string
-  wallet: number
-  payment_password: string
-  email: string
-  phone: string
 
-  public get_user_id(): number|undefined {
+  public get_user_id(): number | undefined {
     return this.user_id
   }
 

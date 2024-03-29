@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-16 14:53:35
- * @LastEditTime: 2024-03-20 21:19:53
+ * @LastEditTime: 2024-03-29 09:18:22
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\utils\ConstantUtil.ts
  * @Description: 服务器网络固定配置文件
@@ -12,9 +12,9 @@ import ip from 'ip'
 class ConstantUtil {
   public static port: number = 4396
   public static userDefaultAvatar =
-    'https://lyjserverbucket.s3.amazonaws.com/user-default.jpg'
+    'https://lyjimageerverbucket.s3.ap-southeast-1.amazonaws.com/admin-default.jpg'
   public static adminDefaultAvatar =
-    'https://lyjserverbucket.s3.ap-southeast-2.amazonaws.com/admin-default.jpg'
+    'https://lyjimageerverbucket.s3.ap-southeast-1.amazonaws.com/user-default.jpg'
   public static privateKey: string = 'liuyongjie'
   public static serverErrMsg: string = '服务器开了小差，请稍后再试~'
   public static uploadAdminProfilePath: string = path.join(

@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-20 11:35:01
- * @LastEditTime: 2024-03-26 22:26:05
+ * @LastEditTime: 2024-03-29 20:16:51
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\FoodMenuServiceImpl.ts
  * @Description: 菜单service的实现类
@@ -80,7 +80,7 @@ export default class FoodMenuServiceImpl implements FoodMenuService {
       ids = [...new Set(ids)]
       const promiseArr: any[] = ids.map((id) => this.foodDao.findById(id))
       const foods: Food[] = await Promise.all(promiseArr)
-      let result =  foodMenu.map((item) => {
+      let result = foodMenu.map((item) => {
         const foodFound = foods.find(
           (food) => food.food_id === item.food_id && food.isdelete === 0
         )
@@ -88,7 +88,7 @@ export default class FoodMenuServiceImpl implements FoodMenuService {
           return Object.assign(item, foodFound)
         }
       })
-      result=result.filter(item=>item!==undefined)
+      result = result.filter((item) => item !== undefined)
       return result
     } catch (error) {
       console.log(error)

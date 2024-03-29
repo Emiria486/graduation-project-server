@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 20:43:49
- * @LastEditTime: 2024-03-26 18:51:45
+ * @LastEditTime: 2024-03-29 20:27:08
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\FoodDaoImpl.ts
  * @Description: 菜品dao实现类
@@ -86,9 +86,9 @@ export default class FoodDaoImpl implements FoodDao {
    * @param {any} food_id:number 菜品id
    * @returns {any} Boolean的promise
    */
-  deleteById(isdelete:number,food_id: number): Promise<boolean> {
-    this.sql = 'update `food` set `isdelete`=? where `food_id`=?'
-    this.sqlParams = [isdelete,food_id]
+  deleteById(isdelete: number, food_id: number): Promise<boolean> {
+    this.sql = 'update `food` set `isdelete`=?,`status`=0 where `food_id`=?'
+    this.sqlParams = [isdelete, food_id]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err) => {
         if (err) reject(err)
