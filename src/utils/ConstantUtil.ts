@@ -10,6 +10,7 @@ import path from 'path'
 import ip from 'ip'
 
 class ConstantUtil {
+  public static adminName = 'liuyongjie'
   public static port: number = 4396
   public static userDefaultAvatar =
     'https://lyjimageerverbucket.s3.ap-southeast-1.amazonaws.com/admin-default.jpg'

@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-20 16:21:31
- * @LastEditTime: 2024-03-20 16:36:17
+ * @LastEditTime: 2024-03-30 19:45:07
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\OrderService.ts
  * @Description: 订单service的接口定义
@@ -27,7 +27,7 @@ export default interface OrderService {
    * @returns {any} orderType[]
    */
   getOrderType(): Promise<OrderType[]>
-   /**
+  /**
    * Description 获取指定用户的所有订单
    * @param {any} user_id:number
    * @returns {any}
@@ -69,4 +69,10 @@ export default interface OrderService {
    * @returns {any}
    */
   getOrdersCount(startTime: string, endTime: string): Promise<number | boolean>
+  /**
+   * Description 获取指定id用户的收起订单总数
+   * @param {any} user_id:number
+   * @returns {any}
+   */
+  getAllOrderCountNumber(user_id: number): Promise<number | boolean>
 }

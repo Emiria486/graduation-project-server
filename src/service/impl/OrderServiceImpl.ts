@@ -19,6 +19,15 @@ export default class OrderServiceImpl implements OrderService {
   constructor() {
     this.orderDao = new OrderDaoImpl()
   }
+  async getAllOrderCountNumber(user_id: number): Promise<number | boolean> {
+    try {
+      const allOrderNumber = await this.orderDao.getAllOrderCount(user_id)
+      return allOrderNumber
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
   /**
    * Description 向order表和orderFood表先后插入订单数据
    * @param {any} order:Order 订单信息
@@ -146,8 +155,12 @@ export default class OrderServiceImpl implements OrderService {
     endTime: string
   ): Promise<Order[]> {
     pageStart = (pageStart - 1) * pageSize
-    return await this.orderDao
-      .queryByPageAndDate(pageStart, pageSize, startTime, endTime)
+    return await this.orderDao.queryByPageAndDate(
+      pageStart,
+      pageSize,
+      startTime,
+      endTime
+    )
   }
   /**
    * Description 统计指定时间段的订单总数

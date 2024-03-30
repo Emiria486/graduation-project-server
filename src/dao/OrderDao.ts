@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 21:46:22
- * @LastEditTime: 2024-03-20 17:36:42
+ * @LastEditTime: 2024-03-30 19:31:59
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\OrderDao.ts
  * @Description: 订单类Dao接口定义
@@ -31,4 +31,10 @@ export default interface OrderDao {
   //   order_food表
   insertOrderFood(foods: OrderFood[]): Promise<boolean>
   findOrderFoodByOrderId(orderId: number): Promise<any[]>
+   /**
+   * Description 获取指定指定id用户的订单总数
+   * @param {any} user_id:number
+   * @returns {any}
+   */
+   getAllOrderCount(user_id: number): Promise<number>
 }

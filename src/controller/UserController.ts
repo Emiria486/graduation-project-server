@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 11:04:26
- * @LastEditTime: 2024-03-30 16:00:21
+ * @LastEditTime: 2024-03-30 19:48:16
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\controller\UserController.ts
  * @Description: 用户controller实现类
@@ -25,18 +25,23 @@ import Order from '../model/Order'
 import AESHelper from '../utils/AESHelper'
 import UserMessageEnum from '../enum/UserMessageEnum'
 import OrderType from '../model/OrderType'
+import AdminService from '../service/AdminService'
+import AdminServiceImpl from '../service/impl/AdminServiceImpl'
+import Admin from '../model/Admin'
 export default class UserController {
   private static instance: UserController
   private userService: UserService
   private couponService: CouponService
   private foodMenuService: FoodMenuService
   private orderService: OrderService
+  private adminService: AdminService
 
   constructor() {
     this.userService = new UserServiceImpl()
     this.couponService = new CouponServiceImpl()
     this.foodMenuService = new FoodMenuServiceImpl()
     this.orderService = new OrderServiceImpl()
+    this.adminService = new AdminServiceImpl()
   }
   public static getInstance(): UserController {
     if (!UserController.instance) {
@@ -44,7 +49,35 @@ export default class UserController {
     }
     return UserController.instance
   }
-
+  /**
+   * Description 用于用户获取管理员信息
+   * @param {any} req:any
+   * @param {any} res:any
+   * @returns {any}
+   */
+  public static async getAdminInfo(req: any, res: any): Promise<void> {
+    const admin = await UserController.getInstance().adminService.getAdminInfo(
+      ConstantUtil.adminName
+    )
+    let type = typeof admin
+    if (type !== 'string') {
+      const adminData = admin as Admin
+      res.send(
+        HttpUtil.resBody(1, 'success', {
+          admin_id: adminData.get_admin_id(),
+          password: adminData.get_password(),
+          username: adminData.get_username(),
+          phone: adminData.get_phone(),
+          avatar: adminData.get_avatar(),
+          address: adminData.get_address(),
+          shop_name: adminData.get_shop_name(),
+          email: adminData.get_email(),
+        })
+      )
+    } else {
+      res.send(HttpUtil.resBody(0, ConstantUtil.serverErrMsg, ''))
+    }
+  }
   /**
    * Description 用户登录（已测试通过）
    * @param {any} req:any
@@ -115,6 +148,10 @@ export default class UserController {
       await UserController.getInstance().couponService.getAvailableUserCouponsNumber(
         userId
       )
+    const allOrderNum =
+      await UserController.getInstance().orderService.getAllOrderCountNumber(
+        userId
+      )
     if (user && typeof couponsCount === 'number') {
       res.send(
         HttpUtil.resBody(1, '获取用户信息成功', {
@@ -127,6 +164,7 @@ export default class UserController {
           couponsCount: couponsCount,
           email: user.email,
           order: 0,
+          allOrderNum: allOrderNum,
         })
       )
     } else {
