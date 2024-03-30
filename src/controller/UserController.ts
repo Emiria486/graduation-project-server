@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 11:04:26
- * @LastEditTime: 2024-03-28 19:34:28
+ * @LastEditTime: 2024-03-30 16:00:21
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\controller\UserController.ts
  * @Description: 用户controller实现类
@@ -125,6 +125,7 @@ export default class UserController {
           address: user.address,
           wallet: Number(user.wallet),
           couponsCount: couponsCount,
+          email: user.email,
           order: 0,
         })
       )
@@ -181,11 +182,11 @@ export default class UserController {
     const date = req.query.date
     const result =
       await UserController.getInstance().couponService.getIssueCoupons(date)
-    if (result!.length > 0) {
+    if (result != null && result.length > 0) {
       res.send(
         HttpUtil.resBody(1, `距离过期大于${date}天的优惠劵`, result as Coupon[])
       )
-    } else if (result!.length === 0) {
+    } else if (result != null && result.length === 0) {
       res.send(HttpUtil.resBody(0, `没有距离过期大于${date}天的优惠劵`, ''))
     } else {
       res.status(500).send(HttpUtil.resBody(0, ConstantUtil.serverErrMsg, ''))
@@ -216,6 +217,7 @@ export default class UserController {
   public static async addCoupon(req: any, res: any): Promise<void> {
     const user_id: number = req.currentId
     const coupon_id: number = req.body.coupon_id
+    console.log('addCoupon参数', user_id, coupon_id)
     const result = await UserController.getInstance().couponService.getCoupon(
       coupon_id,
       user_id
