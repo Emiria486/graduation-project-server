@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 09:07:13
- * @LastEditTime: 2024-03-31 12:19:30
+ * @LastEditTime: 2024-03-31 16:51:49
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\socket\OrderSocket.ts
  * @Description: 实现订单状态实时更改(用户预订socket功能测试通过，管理员实时推送没有测试)
@@ -46,7 +46,7 @@ const orderSocket = () => {
           body.foods
         )
         // 优惠券处理
-        if (body.coupon_id) {
+        if (body.coupon_id !== undefined) {
           const couponService: CouponService = new CouponServiceImpl()
           //更新优惠券状态
           let couponRes: boolean = await couponService.updateUserCouponStatus(
@@ -60,7 +60,7 @@ const orderSocket = () => {
         } else {
           connection.send(HttpUtil.resBody(0, ConstantUtil.serverErrMsg, ''))
         }
-        //如果是外卖订单服务器反馈信息
+        //如果是外卖订单服务器给管理员反馈信息
         if (body.order_type === OrderTypeEnum.WaiMai) {
           for (const item of server.connections) {
             if (item.username === ADMIN) {
