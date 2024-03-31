@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-20 19:54:57
- * @LastEditTime: 2024-03-29 09:54:45
+ * @LastEditTime: 2024-03-31 20:44:11
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\UserServiceImpl.ts
  * @Description: 用户service的实现类
@@ -70,7 +70,7 @@ export default class UserServiceImpl implements UserService {
       } else {
         const addResult = await this.UserDao.insertOnce(
           username,
-          password,
+          AESHelper.decrypt(password),
           email,
           phone
         )
