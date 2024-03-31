@@ -14,7 +14,7 @@ import path from 'path'
 import userRouter from './router/userRouter'
 import adminRouter from './router/adminRouter'
 import ConstantUtil from './utils/ConstantUtil'
-import { orderSocket } from './socket/OrderSocket'
+import orderSocket from './socket/OrderSocket'
 const app = express()
 //引入cors，解决跨域问题
 app.use(cors())

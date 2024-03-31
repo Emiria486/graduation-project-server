@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 22:00:43
- * @LastEditTime: 2024-03-30 19:40:25
+ * @LastEditTime: 2024-03-31 12:15:21
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\OrderDaoImpl.ts
  * @Description: 订单（order）实体类的dao实现类和order_food实体类的dao实体类
@@ -32,7 +32,7 @@ export default class OrderDaoImpl implements OrderDao {
         if (err) reject(err)
         else {
           console.log('queryOrderIdByUserIdAndCreate_time:成功', result[0])
-          return result[0] as Order
+          return resolve(result[0] as Order)
         }
       })
     })
@@ -222,7 +222,7 @@ export default class OrderDaoImpl implements OrderDao {
     })
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err) => {
-        if (err) reject(false)
+        if (err) reject(err)
         else {
           console.log('insertOrderFood:成功')
           resolve(true)

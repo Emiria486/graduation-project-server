@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-20 16:37:10
- * @LastEditTime: 2024-03-26 19:32:56
+ * @LastEditTime: 2024-03-31 12:14:03
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\OrderServiceImpl.ts
  * @Description: 订单service的实现类
@@ -42,13 +42,16 @@ export default class OrderServiceImpl implements OrderService {
   ): Promise<boolean> {
     // 1.先向Order表插入数据后得到插入的order_id
     try {
+      // 向order表插入一条记录
       const addOrderResult = await this.orderDao.insertOnce(order)
+      // 插入成功后找到插入的记录信息
       if (addOrderResult) {
         let orderIDObject =
           await this.orderDao.queryOrderIdByUserIdAndCreate_time(
             user_id,
             order.create_time
           )
+          // 获得订单编号
         let orderID = orderIDObject.order_id
         // 2.再向order_food表插入order_id,food_id，number
         let FullOrderFoods: OrderFood[] = []
@@ -60,9 +63,8 @@ export default class OrderServiceImpl implements OrderService {
           )
           FullOrderFoods.push(itemFood)
         })
-        return await this.orderDao
-          .insertOrderFood(FullOrderFoods)
-          .catch(() => false)
+        console.log("插入的orderFoods",FullOrderFoods)
+        return await this.orderDao.insertOrderFood(FullOrderFoods)
       } else {
         return false // 处理无法成功插入订单的情况
       }
