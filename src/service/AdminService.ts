@@ -11,6 +11,11 @@ import Admin from '../model/Admin'
 import Food from '../model/Food'
 export default interface AdminService {
   /**
+   * Description 查询所有的管理员信息
+   * @returns {any} 管理员对象数组
+   */
+  findAllAdmin(): Promise<Admin[]>
+  /**
    * Description 管理员登录
    * @param {any} username:string 用户名登录
    * @param {any} password:string 客户端使用AES加密后的密码字符串

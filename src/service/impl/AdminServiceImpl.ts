@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-19 17:30:39
- * @LastEditTime: 2024-03-27 18:42:00
+ * @LastEditTime: 2024-04-01 11:34:17
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\AdminServiceImpl.ts
  * @Description: 管理员server类的实现类
@@ -28,6 +28,11 @@ export default class AdminServiceImpl implements AdminService {
   constructor() {
     this.foodDao = new FoodDaoImpl()
     this.adminDao = new AdminDaoImpl()
+  }
+  findAllAdmin(): Promise<Admin[]> {
+    const admins = this.adminDao.queryAllAdmin()
+    console.log('findAllAdmin', admins)
+    return admins
   }
   /**
    * Description 管理员登录
@@ -148,7 +153,6 @@ export default class AdminServiceImpl implements AdminService {
         fs.unlinkSync(newPath)
         console.log('Local file deleted successfully.')
         return updated
-        
       } catch (error) {
         console.error('Error uploading to S3 or updating database:', error)
         return false

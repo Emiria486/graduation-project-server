@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 09:32:50
- * @LastEditTime: 2024-03-27 18:09:49
+ * @LastEditTime: 2024-04-01 11:29:39
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\AdminDaoImpl.ts
  * @Description: 管理员dao实现类
@@ -15,6 +15,25 @@ class AdminDaoImpl implements AdminDao {
   pool = DBUtil.createPoolConnection()
   sql: string = ''
   sqlParams: Array<any> = []
+  /**
+   * Description 查询所有的管理员信息
+   * @returns {any}
+   */
+  queryAllAdmin(): Promise<Admin[]> {
+    this.sql = 'select * from `admin`'
+    return new Promise((resolve, reject) => {
+      this.pool.execute(this.sql, (err: any, result: Admin[]) => {
+        if (err) reject(err)
+        else {
+          if (result.length !== 0) {
+            resolve(result)
+          } else {
+            reject(null)
+          }
+        }
+      })
+    })
+  }
   /**
    * Description 根据管理员用户名找到对应管理员(已测试成功)
    * @param {any} username:string 管理员用户名
@@ -65,7 +84,7 @@ class AdminDaoImpl implements AdminDao {
       admin.get_phone(),
       admin.get_address(),
       admin.get_email(),
-      admin.get_username()
+      admin.get_username(),
     ]
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err: any) => {

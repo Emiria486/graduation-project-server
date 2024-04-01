@@ -13,5 +13,6 @@ interface AdminDao {
   updateInfoByUsername(admin: Admin): Promise<boolean>
   updatePassByUsername(username: string, password: string): Promise<boolean>
   updateAvatarByUsername(username: string, uploadPath: string): Promise<boolean>
+  queryAllAdmin(): Promise<Admin[]>
 }
 export default AdminDao
