@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-20 15:56:25
- * @LastEditTime: 2024-03-28 19:22:11
+ * @LastEditTime: 2024-04-02 15:19:26
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\service\impl\FoodServiceImpl.ts
  * @Description:菜品service的实现类
@@ -85,11 +85,10 @@ export default class FoodServiceImpl implements FoodService {
           description,
           isdelete
         )
+        const updated = await this.foodDao.addFood(food)
         // 上传完以后删除本地文件
         fs.unlinkSync(newPath)
         console.log('成功删除本地文件')
-        const updated = await this.foodDao.addFood(food)
-        
         return updated
       } catch (error) {
         console.error('上传S3失败或上传数据库失败', error)
