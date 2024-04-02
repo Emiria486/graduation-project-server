@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 11:04:15
- * @LastEditTime: 2024-03-29 09:47:25
+ * @LastEditTime: 2024-04-02 13:02:20
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\controller\AdminController.ts
  * @Description: 管理员controller层
@@ -140,7 +140,11 @@ export default class AdminController {
   public static async updateAvatar(req: any, res: any) {
     const username = req.currentUsername
     // body类型选择form-data, 然后键名称选择files,对就是上传的图片
-    const { originalname, destination, path } = req.files[0]
+    const { destination, path } = req.files[0]
+    const originalname = Buffer.from(
+      req.files[0].originalname,
+      'latin1'
+    ).toString('utf8')
     const result: boolean =
       await AdminController.getInstance().adminService!.updateAdminAvatar(
         originalname, //用户计算机上的文件的名称
@@ -246,7 +250,15 @@ export default class AdminController {
     const { food_name, price, status, description, isdelete } = JSON.parse(
       req.body.food
     )
-    const { destination, path, originalname } = req.files[0]
+    console.log('菜品信息', food_name, price, status, description, isdelete)
+    // 获取上传的文件信息
+    console.log('传输的文件', req.files)
+    const { destination, path } = req.files[0]
+    const originalname = Buffer.from(
+      req.files[0].originalname,
+      'latin1'
+    ).toString('utf8')
+
     const result: boolean =
       await AdminController.getInstance().foodService.addFood(
         food_name,

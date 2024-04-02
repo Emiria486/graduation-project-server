@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-22 10:42:57
- * @LastEditTime: 2024-03-26 19:34:32
+ * @LastEditTime: 2024-04-02 11:46:37
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\router\adminRouter.ts
  * @Description: 管理员api路径
