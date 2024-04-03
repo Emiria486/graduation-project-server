@@ -19,7 +19,6 @@ import FoodDaoImpl from '../../dao/impl/FoodDaoImpl'
 import FoodDao from '../../dao/FoodDao'
 import AWS from 'aws-sdk'
 import AESHelper from '../../utils/AESHelper'
-import { resolve } from 'node:path'
 require('dotenv').config() //要访问配置信息的地方加上，使其配置信息全局可访问
 
 export default class AdminServiceImpl implements AdminService {

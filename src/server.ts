@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-16 10:34:04
- * @LastEditTime: 2024-04-03 12:12:01
+ * @LastEditTime: 2024-04-03 19:58:19
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\server.ts
  * @Description: 服务器入口文件
@@ -18,6 +18,8 @@ import HttpUtil from './utils/HttpUtil'
 import orderSocket from './socket/OrderSocket'
 import './process' //处理未捕获异常
 import { errorHandler } from './exceptions/ErrorHandler'
+import RequestLogMiddleware from './utils/RequestLogMiddleware'
+import ErrorLogMiddleware from './utils/ErrorLogMiddleware'
 
 const app = express()
 //引入cors，解决跨域问题
@@ -28,45 +30,24 @@ orderSocket()
 app.use('/static/', express.static(path.join(__dirname, './upload/')))
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
 app.use(bodyParser.json({ limit: '50mb' }))
-
-const logger = {
-  log(err: Error) {
-    console.log(`logger: `, err)
-  },
-}
-
-const messageLogger = {
-  sendErrorMessage(err: Error) {
-    console.log('sendErrorMessage: ', err)
-  },
-}
-
+// 统一处理异常
 userRouter.use(
   (err: Error, req: Request, res: Response, next: NextFunction) => {
-    // 日志记录
-    logger.log(err)
-    // 发送通知信息
-    messageLogger.sendErrorMessage(err)
     next(err)
     errorHandler.handleError(err)
   }
 )
 adminRouter.use(
   (err: Error, req: Request, res: Response, next: NextFunction) => {
-    // 日志记录
-    logger.log(err)
-    // 发送通知信息
-    messageLogger.sendErrorMessage(err)
     next(err)
     errorHandler.handleError(err)
   }
 )
+// 运用上传请求log中间件
+app.use(RequestLogMiddleware)
+// 运用上传异常log中间件
 app.use('/app', userRouter).use('/lyj', adminRouter)
-// 错误处理中间件
-app.use((err: any, req: any, res: any, next: any) => {
-  console.error(err.stack)
-  res.status(500).send(HttpUtil.resBody(0, ConstantUtil.serverErrMsg, ''))
-})
+app.use(ErrorLogMiddleware)
 app.listen(ConstantUtil.port, () =>
   console.log(`http server running in http://localhost:${ConstantUtil.port}`)
 )
