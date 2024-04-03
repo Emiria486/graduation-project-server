@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-22 10:42:57
- * @LastEditTime: 2024-04-02 11:46:37
+ * @LastEditTime: 2024-04-03 10:05:22
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\router\adminRouter.ts
  * @Description: 管理员api路径
@@ -11,8 +11,11 @@ import AdminController from '../controller/AdminController'
 import Auth from '../filter/Auth'
 import multer from 'multer'
 import ConstantUtil from '../utils/ConstantUtil'
+require('express-async-errors');  //捕获全局的异步错误
 const avatarUpload = multer({ dest: ConstantUtil.uploadAdminProfilePath })
 const foodImageUpload = multer({ dest: ConstantUtil.uploadFoodImagePath })
+
+
 
 const adminRouter = express.Router()
 adminRouter.post('/login', AdminController.adminLogin)

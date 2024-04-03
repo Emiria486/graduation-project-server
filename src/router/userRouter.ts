@@ -9,6 +9,7 @@
 import express from 'express'
 import UserAuth from '../filter/UserAuth'
 import UserController from '../controller/UserController'
+require('express-async-errors');  //捕获全局的异步错误
 
 const userRouter = express.Router()
 
