@@ -1,9 +1,17 @@
+/*
+ * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
+ * @Date: 2024-04-06 17:58:50
+ * @LastEditTime: 2024-04-06 18:23:24
+ * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
+ * @FilePath: \server\src\utils\SQSUtil.ts
+ * @Description: sqs队列的入队列和接收队列的函数
+ */
 import AWS from 'aws-sdk'
 require('dotenv').config() //要访问配置信息的地方加上，使其配置信息全局可访问
 import { errorHandler } from '../exceptions/ErrorHandler'
 const sqs = new AWS.SQS({ region: process.env.AWS_REGION }) // 根据您的地区配置
 // 发送消息到sqs队列
-const sendMessageToQueue = async (message: any) => {
+export const sendMessageToQueue = async (message: any) => {
   const params: any = {
     MessageBody: JSON.stringify(message),
     QueueUrl: process.env.AWS_SQSURL,
@@ -16,7 +24,7 @@ const sendMessageToQueue = async (message: any) => {
   }
 }
 // 从SQS队列接收消息
-const receiveMessageFromQueue = async () => {
+export const receiveMessageFromQueue = async () => {
   const params: any = {
     QueueUrl: process.env.AWS_SQSURL, // 替换成您的SQS队列URL
     MaxNumberOfMessages: 1,
@@ -45,6 +53,6 @@ const receiveMessageFromQueue = async () => {
 }
 
 // 调用发送消息到队列的函数
-sendMessageToQueue({ key: 'value' });
+// sendMessageToQueue({ key: 'value' });
 // 调用接收消息的函数
-receiveMessageFromQueue();
+// receiveMessageFromQueue();
