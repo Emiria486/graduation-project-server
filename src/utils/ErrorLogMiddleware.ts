@@ -27,8 +27,8 @@ const ErrorLogMiddleware = (
   const errMessage = `Error:${err.stack}`
   console.log('错误中间件执行', errMessage)
   const params = {
-    logGroupName: process.env.AWS_logGroupName, // 替换为您的日志组名称
-    logStreamName: process.env.AWS_logStreamName, // 替换为您的日志流名称
+    logGroupName: process.env.AWS_logGroupName, // 替换为env的日志组名称
+    logStreamName: process.env.AWS_logStreamName, // 替换为env的日志流名称
     logEvents: [
       {
         message: errMessage,
