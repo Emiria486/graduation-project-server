@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-16 10:34:04
- * @LastEditTime: 2024-04-03 19:58:19
+ * @LastEditTime: 2024-04-07 14:44:19
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\server.ts
  * @Description: 服务器入口文件
@@ -14,7 +14,6 @@ import path from 'path'
 import userRouter from './router/userRouter'
 import adminRouter from './router/adminRouter'
 import ConstantUtil from './utils/ConstantUtil'
-import HttpUtil from './utils/HttpUtil'
 import orderSocket from './socket/OrderSocket'
 import './process' //处理未捕获异常
 import { errorHandler } from './exceptions/ErrorHandler'

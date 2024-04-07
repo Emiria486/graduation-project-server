@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-16 14:42:49
- * @LastEditTime: 2024-04-06 17:49:41
+ * @LastEditTime: 2024-04-07 15:25:48
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\utils\DBUtil.ts
  * @Description: 建立mysql连接池函数
@@ -10,7 +10,7 @@ import mysql, { PoolOptions } from 'mysql2'
 import { errorHandler } from '../exceptions/ErrorHandler'
 class DBUtil {
   public static access: PoolOptions = {
-    host: '127.0.0.1', //id地址
+    host: '127.0.0.1', //ip地址
     user: 'root', //连接用户
     password: '123581lyj', //登录密码
     database: 'order_food', // 使用的database名称
@@ -27,14 +27,15 @@ class DBUtil {
   public static createPoolConnection() {
     const pool = mysql.createPool(this.access)
     // 添加处理事务逻辑
-    pool.on('connection', (connection) => {
-      // 设置为手动提交模式,保证数据的一致性和完整性
-      connection.query('SET SESSION autocommit=0;', (err) => {
-        if (err) {
-          errorHandler.handleError(err)
-        }
-      })
-    })
+    // pool.on('connection', (connection) => {
+    //   // 设置为手动提交模式,保证数据的一致性和完整性
+    //   connection.query('SET SESSION autocommit=0;', (err) => {
+    //     if (err) {
+    //       // 统一错误处理
+    //       errorHandler.handleError(err)
+    //     }
+    //   })
+    // })
     return pool
   }
 }
