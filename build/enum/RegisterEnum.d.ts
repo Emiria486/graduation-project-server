@@ -1,0 +1,6 @@
+declare enum RegisterEnum {
+    serverErr = "\u670D\u52A1\u5668\u53D1\u751F\u9519\u8BEF",
+    userExist = "\u7528\u6237\u5DF2\u5B58\u5728\uFF0C\u8BF7\u767B\u5F55\u6216\u4F7F\u7528\u5176\u4ED6\u7528\u6237\u540D\u6CE8\u518C\uFF01",
+    success = "\u6CE8\u518C\u6210\u529F"
+}
+export default RegisterEnum;

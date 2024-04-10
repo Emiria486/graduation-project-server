@@ -1,0 +1,30 @@
+export default class Order {
+    order_id?: number;
+    user_id: number;
+    user_phone: string;
+    status: boolean;
+    create_time: string;
+    order_type: number;
+    price: number;
+    discount: number;
+    address: string;
+    get_order_id(): number | undefined;
+    set_order_id(order_id: number): void;
+    get_user_id(): number;
+    set_user_id(user_id: number): void;
+    get_user_phone(): string;
+    set_user_phone(user_phone: string): void;
+    get_status(): boolean;
+    set_status(status: boolean): void;
+    get_create_time(): string;
+    set_create_time(_create_time: string): void;
+    get_order_type(): number;
+    set_order_type(_order_type: number): void;
+    get_price(): number;
+    set_price(_price: number): void;
+    get_discount(): number;
+    set_discount(_discount: number): void;
+    get_address(): string;
+    set_address(_address: string): void;
+    constructor(user_id: number, user_phone: string, status: boolean, create_time: string, order_type: number, price: number, discount: number, address: string, order_id?: number);
+}

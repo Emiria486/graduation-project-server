@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
         "downlevelIteration": true,
-        "outDir": "build",
+        "outDir": "./build",
+        "declaration": true,
         "target": "es5",
         "module": "commonjs",
         "sourceMap": true,
