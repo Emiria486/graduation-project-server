@@ -6,12 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-16 14:42:49
- * @LastEditTime: 2024-04-07 15:25:48
+ * @LastEditTime: 2024-04-15 10:31:05
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\utils\DBUtil.ts
  * @Description: 建立mysql连接池函数
  */
 var mysql2_1 = __importDefault(require("mysql2"));
+require('dotenv').config(); //要访问配置信息的地方加上，使其配置信息全局可访问
 var DBUtil = /** @class */ (function () {
     function DBUtil() {
     }
@@ -34,9 +35,11 @@ var DBUtil = /** @class */ (function () {
         return pool;
     };
     DBUtil.access = {
-        host: '127.0.0.1', //ip地址
+        // host: '127.0.0.1', //ip地址
+        host: process.env.AWS_RDS_MYSQL,
         user: 'root', //连接用户
-        password: '123581lyj', //登录密码
+        // password: '123581lyj', //登录密码
+        password: process.env.AWS_RDS_password,
         database: 'order_food', // 使用的database名称
         charset: 'utf8mb4', //字符集
         waitForConnections: true,
