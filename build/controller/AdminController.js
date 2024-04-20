@@ -603,6 +603,7 @@ var AdminController = /** @class */ (function () {
                         pageSize = parseInt(req.query.pageSize);
                         startTime = req.query.startTime;
                         endTime = req.query.endTime;
+                        console.log("分页数据", pageStart, pageSize, startTime, endTime);
                         return [4 /*yield*/, AdminController.getInstance().orderService.getOrdersByPaginationAndDate(pageStart, pageSize, startTime, endTime)];
                     case 1:
                         orders = _a.sent();

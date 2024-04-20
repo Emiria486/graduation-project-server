@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-21 11:04:15
- * @LastEditTime: 2024-04-02 13:02:20
+ * @LastEditTime: 2024-04-18 20:36:51
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\controller\AdminController.ts
  * @Description: 管理员controller层
@@ -465,6 +465,7 @@ export default class AdminController {
     const pageSize = parseInt(req.query.pageSize)
     const startTime = req.query.startTime
     const endTime = req.query.endTime
+    console.log("分页数据",pageStart,pageSize,startTime,endTime)
     const orders: Order[] =
       await AdminController.getInstance().orderService.getOrdersByPaginationAndDate(
         pageStart,

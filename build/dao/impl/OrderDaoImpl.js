@@ -163,9 +163,10 @@ var OrderDaoImpl = /** @class */ (function () {
      */
     OrderDaoImpl.prototype.queryByPageAndDate = function (pageStart, pageSize, startTime, endTime) {
         var _this = this;
+        console.log("sql参数数据", pageStart, pageSize, startTime, endTime);
         this.sql =
             'select * from `order` where `create_time` between ? and ? limit ? offset ?';
-        this.sqlParams = [startTime, endTime, pageSize, pageStart];
+        this.sqlParams = [startTime + "", endTime + "", pageSize + '', pageStart + ''];
         return new Promise(function (resolve, reject) {
             _this.pool.execute(_this.sql, _this.sqlParams, function (err, result) {
                 if (err)

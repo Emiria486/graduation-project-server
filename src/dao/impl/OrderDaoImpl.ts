@@ -1,7 +1,7 @@
 /*
  * @Author: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @Date: 2024-03-17 22:00:43
- * @LastEditTime: 2024-03-31 12:15:21
+ * @LastEditTime: 2024-04-18 20:46:51
  * @LastEditors: Emiria486 87558503+Emiria486@users.noreply.github.com
  * @FilePath: \server\src\dao\impl\OrderDaoImpl.ts
  * @Description: 订单（order）实体类的dao实现类和order_food实体类的dao实体类
@@ -162,9 +162,10 @@ export default class OrderDaoImpl implements OrderDao {
     startTime: string,
     endTime: string
   ): Promise<Order[]> {
+    console.log("sql参数数据",pageStart,pageSize,startTime,endTime)
     this.sql =
       'select * from `order` where `create_time` between ? and ? limit ? offset ?'
-    this.sqlParams = [startTime, endTime, pageSize, pageStart]
+    this.sqlParams = [startTime+"", endTime+"", pageSize+'', pageStart+'']
     return new Promise((resolve, reject) => {
       this.pool.execute(this.sql, this.sqlParams, (err, result) => {
         if (err) reject(err)
